@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Room;
-use Doctrine\ORM\EntityManager;
 
 final class RoomController extends AbstractController
 {
