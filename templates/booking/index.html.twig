@@ -3,6 +3,9 @@
 {% block title %}Booking index{% endblock %}
 
 {% block body %}
+    {% block header %}
+    {{parent()}}
+    {% endblock %}
     <h1>Booking index</h1>
 
     <table class="table">

@@ -12,6 +12,14 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+            <header>
+            {% block header %}
+            
+            {{app.user ? app.user.id ~ ' ' ~ app.user.email ~ ' ' ~ (app.user.roles|join(', ')) ~ ' ' ~ app.user.name : 'guest' }}
+            
+            {% endblock %}
+            </header>
+        {% endblock %}
     </body>
 </html>
