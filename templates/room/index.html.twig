@@ -16,6 +16,11 @@
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
 
+    {% if rooms|length == 0 %}
+    <p>No room was found yet</p>
+    <a href='/room_add_to_db'><button>Click here to add the rooms to the system</button></a>
+    {% endif %}
+
     <table>
     
     {% for room in rooms %}
