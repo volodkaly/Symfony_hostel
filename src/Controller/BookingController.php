@@ -28,7 +28,7 @@ final class BookingController extends AbstractController
 
 
 
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     #[Route('/new', name: 'app_booking_new', methods: ['GET', 'POST'])]
 
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -59,7 +59,7 @@ final class BookingController extends AbstractController
             'chosen_room' => $chosen_room,
         ]);
     }
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     #[Route('/{id}', name: 'app_booking_show', methods: ['GET'])]
     public function show(Booking $booking): Response
     {
