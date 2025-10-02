@@ -42,8 +42,8 @@
      <tr>
     <td>
    <form id="myForm" method="POST" action="{{ path('app_booking_new') }}" data-turbo="false">
-    <input name="chosen_room" type="text" value={{room.id}}>
-    <button type="submit">Submit</button>
+    <input name="chosen_room" type="hidden" value={{room.id}}>
+    <button type="submit">Book this room</button>
     </form>
     </td>
     </tr> 
