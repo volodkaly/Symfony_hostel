@@ -20,7 +20,7 @@ class Booking
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $end_date = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 2, nullable: true)]
     private ?string $total_price = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
