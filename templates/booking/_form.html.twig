@@ -1,5 +1,112 @@
+
+
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_widget(form.start_date) }}
+    {{ form_widget(form.end_date) }}
+    {{ form_widget(form.room) }}
+    {{ form_widget(form.total_price) }}
+    <div id="total-price-container" style="margin: 1em 0; font-weight: bold;">
+        Total price: <span id="total-price">0</span>
+    </div>
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const startDateInput = document.querySelector('[name$="[start_date]"]');
+        const endDateInput = document.querySelector('[name$="[end_date]"]');
+        const roomInput = document.querySelector('[name$="[room]"]');
+        const totalPriceSpan = document.getElementById('total-price');
+        const totalPriceInput = document.querySelector('[name$="[total_price]"]');
+
+        function getRoomPrice() {
+            if (!roomInput) return 0;
+            let selected = roomInput.options[roomInput.selectedIndex];
+            return selected ? parseFloat(selected.getAttribute('data-price') || '0') : 0;
+        }
+
+        function calculateTotalPrice() {
+            const start = startDateInput.value;
+            const end = endDateInput.value;
+            const pricePerDay = getRoomPrice();
+            if (!start || !end || !pricePerDay) {
+                totalPriceSpan.textContent = '0';
+                if (totalPriceInput) totalPriceInput.value = '';
+                return;
+            }
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+            const diffTime = endDate - startDate;
+            const diffDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+            const total = (diffDays * pricePerDay).toFixed(2);
+            totalPriceSpan.textContent = total;
+            if (totalPriceInput) totalPriceInput.value = total;
+        }
+
+        startDateInput && startDateInput.addEventListener('change', calculateTotalPrice);
+        endDateInput && endDateInput.addEventListener('change', calculateTotalPrice);
+        roomInput && roomInput.addEventListener('change', calculateTotalPrice);
+
+        if (roomInput && roomInput.options.length === 1) {
+            roomInput.options[0].setAttribute('data-price', '{{ form.room.vars.choices[0].data.price|default(0) }}');
+        } else if (roomInput) {
+            {% for choice in form.room.vars.choices %}
+                var opt = roomInput.querySelector('option[value="{{ choice.value }}"]');
+                if (opt) opt.setAttribute('data-price', '{{ choice.data.price|default(0) }}');
+            {% endfor %}
+        }
+
+        calculateTotalPrice();
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const startDateInput = document.querySelector('[name$="[start_date]"]');
+        const endDateInput = document.querySelector('[name$="[end_date]"]');
+        const roomInput = document.querySelector('[name$="[room]"]');
+        const totalPriceSpan = document.getElementById('total-price');
+
+        // You may want to fetch room prices from a JS object or via AJAX. For now, we use a data attribute.
+        // If only one room is selectable, get its price from a data attribute on the select/option.
+        function getRoomPrice() {
+            if (!roomInput) return 0;
+            let selected = roomInput.options[roomInput.selectedIndex];
+            return selected ? parseFloat(selected.getAttribute('data-price') || '0') : 0;
+        }
+
+        function calculateTotalPrice() {
+            const start = startDateInput.value;
+            const end = endDateInput.value;
+            const pricePerDay = getRoomPrice();
+            if (!start || !end || !pricePerDay) {
+                totalPriceSpan.textContent = '0';
+                return;
+            }
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+            const diffTime = endDate - startDate;
+            const diffDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+            totalPriceSpan.textContent = (diffDays * pricePerDay).toFixed(2);
+        }
+
+        startDateInput && startDateInput.addEventListener('change', calculateTotalPrice);
+        endDateInput && endDateInput.addEventListener('change', calculateTotalPrice);
+        roomInput && roomInput.addEventListener('change', calculateTotalPrice);
+
+        // If only one room, set its price as a data attribute
+        if (roomInput && roomInput.options.length === 1) {
+            // You need to set the price here from backend
+            roomInput.options[0].setAttribute('data-price', '{{ form.room.vars.choices[0].data.price|default(0) }}');
+        } else if (roomInput) {
+            // For multiple rooms, set data-price for each option
+            {% for choice in form.room.vars.choices %}
+                var opt = roomInput.querySelector('option[value="{{ choice.value }}"]');
+                if (opt) opt.setAttribute('data-price', '{{ choice.data.price|default(0) }}');
+            {% endfor %}
+        }
+
+        calculateTotalPrice();
+    });
+</script>
 

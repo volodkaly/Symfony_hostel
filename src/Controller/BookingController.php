@@ -44,6 +44,27 @@ final class BookingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Calculate total price (backend)
+            $start = $booking->getStartDate();
+            $end = $booking->getEndDate();
+            $room = $booking->getRoom();
+            $backendTotal = null;
+            if ($start && $end && $room) {
+                $interval = $start->diff($end);
+                $days = $interval->days;
+                $pricePerDay = method_exists($room, 'getPrice') ? (float) $room->getPrice() : 0;
+                $backendTotal = number_format($days * $pricePerDay, 2, '.', '');
+                $booking->setTotalPrice($backendTotal);
+            }
+
+            // Get frontend total price from hidden field
+            $frontendTotal = $form->get('total_price')->getData();
+            if ($frontendTotal !== null && $backendTotal !== null && $frontendTotal !== $backendTotal) {
+                $this->addFlash('warning', 'Total price mismatch between frontend and backend calculation. Please review your booking.');
+                // Optionally, you can redirect back or handle as needed
+                // return $this->redirectToRoute('app_booking_new');
+            }
+
             $entityManager->persist($booking);
             $entityManager->flush();
 

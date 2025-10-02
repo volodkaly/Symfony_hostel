@@ -15,11 +15,20 @@ class BookingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('start_date')
-            ->add('end_date')
+            ->add('start_date', null, [
+                'widget' => 'single_text',
+            ])
+            ->add('end_date', null, [
+                'widget' => 'single_text',
+            ])
             ->add('room', EntityType::class, [
                 'class' => Room::class,
                 'choice_label' => 'id',
+            ])
+            ->add('total_price', null, [
+                'mapped' => false,
+                'attr' => ['type' => 'hidden'],
+                'required' => false,
             ])
         ;
     }
