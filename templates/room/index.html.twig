@@ -41,7 +41,10 @@
     </tr>
      <tr>
     <td>
-    <a method='post' href='booking/new'><button type='submit' name='room' value={{room.id}}>Book this room</button></a> 
+   <form id="myForm" method="POST" action="{{ path('app_booking_new') }}" data-turbo="false">
+    <input name="chosen_room" type="text" value={{room.id}}>
+    <button type="submit">Submit</button>
+    </form>
     </td>
     </tr> 
     {% endfor %}

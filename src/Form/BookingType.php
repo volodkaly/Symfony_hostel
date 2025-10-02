@@ -18,10 +18,6 @@ class BookingType extends AbstractType
             ->add('start_date')
             ->add('end_date')
             ->add('total_price')
-            ->add('customer', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
             ->add('room', EntityType::class, [
                 'class' => Room::class,
                 'choice_label' => 'id',

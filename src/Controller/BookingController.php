@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Entity\Room;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/booking')]
@@ -33,6 +34,12 @@ final class BookingController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $booking = new Booking();
+        $chosen_room = $request->request->get('chosen_room') ?? null;
+        if ($chosen_room) {
+            $booking->setRoom($entityManager->getRepository(Room::class)->find($chosen_room));
+        }
+
+        $booking->setCustomer($this->getUser());
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
 
@@ -43,9 +50,13 @@ final class BookingController extends AbstractController
             return $this->redirectToRoute('app_booking_index', [], Response::HTTP_SEE_OTHER);
         }
 
+
+
+
         return $this->render('booking/new.html.twig', [
             'booking' => $booking,
             'form' => $form,
+            'chosen_room' => $chosen_room,
         ]);
     }
     #[IsGranted('ROLE_ADMIN')]
