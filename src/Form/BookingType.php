@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\Booking;
 use App\Entity\Room;
 use App\Entity\User;
+use Symfony\Component\Form\Button;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,6 +23,7 @@ class BookingType extends AbstractType
             ->add('end_date', null, [
                 'widget' => 'single_text',
             ])
+            ->add('isPaid', ButtonType::class)
             ->add('room', EntityType::class, [
                 'class' => Room::class,
                 'choice_label' => 'id',

@@ -15,6 +15,7 @@
                 <th>Start_date</th>
                 <th>End_date</th>
                 <th>Total_price</th>
+                <th>Is paid</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -25,6 +26,7 @@
                 <td>{{ booking.startDate ? booking.startDate|date('Y-m-d') : '' }}</td>
                 <td>{{ booking.endDate ? booking.endDate|date('Y-m-d') : '' }}</td>
                 <td>{{ booking.totalPrice }}</td>
+                <td>{{ booking.isPaid ? 'paid':'not paid' }}</td>
                 <td>
                     <a href="{{ path('app_booking_show', {'id': booking.id}) }}">show</a>
                     <a href="{{ path('app_booking_edit', {'id': booking.id}) }}">edit</a>
