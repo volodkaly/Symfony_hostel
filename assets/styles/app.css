@@ -1,3 +1,83 @@
+.book-btn {
+  transition: transform 0.15s cubic-bezier(0.4, 2, 0.6, 1), background 0.2s;
+}
+.book-btn:hover {
+  transform: scale(1.08);
+  background: linear-gradient(90deg, #b993e6 0%, #6c3eb6 100%);
+}
+
 body {
-    background-color: skyblue;
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(194, 178, 229);
+  text-wrap: nowrap;
+}
+
+.wrapper,
+.example-wrapper {
+  background: white;
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  width: 94vw;
+  margin: 40px auto;
+  padding: 10px 20px;
+  overflow: auto;
+  height: auto;
+}
+
+.rooms-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.room-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  padding: 24px 32px;
+  min-width: 260px;
+  max-width: 320px;
+  margin: 0 8px 24px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.room-card:hover {
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.18);
+  transform: translateY(-5px);
+}
+.room-card h2 {
+  font-size: 1.3rem;
+  margin: 0 0 8px 0;
+  color: #6c3eb6;
+}
+.room-card .room-info {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.room-card .room-action {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.room-card button {
+  background: linear-gradient(90deg, #6c3eb6 0%, #b993e6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.room-card button:hover {
+  background: linear-gradient(90deg, #b993e6 0%, #6c3eb6 100%);
 }
