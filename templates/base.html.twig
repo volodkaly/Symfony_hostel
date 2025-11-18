@@ -16,7 +16,19 @@
             <header>
             {% block header %}
             
-            {{app.user ? app.user.id ~ ' ' ~ app.user.email ~ ' ' ~ (app.user.roles|join(', ')) ~ ' ' ~ app.user.name : 'guest' }}
+            {% if app.user %}
+             <a href="{{ path('app_logout') }}" style="display: block; text-align: right;">
+            <img src="{{ asset('icons/logout.png') }}" height=50 margin=auto alt="logout">
+            </a>
+            {% else %}
+                <a href="{{ path('app_login') }}" style="display: block; text-align: right;">
+            <img src="{{ asset('icons/login.png') }}" height=50 margin=auto alt="login">
+            </a>
+            {% endif %}
+
+            
+            {# {{app.user ? app.user.email ~ ' ' ~ (app.user.roles|join(', ')) ~ ' ' ~ app.user.name : 'guest' }} #}
+
             
             {% endblock %}
             </header>

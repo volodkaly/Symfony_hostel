@@ -61,8 +61,6 @@ final class BookingController extends AbstractController
             $frontendTotal = $form->get('total_price')->getData();
             if ($frontendTotal !== null && $backendTotal !== null && $frontendTotal !== $backendTotal) {
                 $this->addFlash('warning', 'Total price mismatch between frontend and backend calculation. Please review your booking.');
-                // Optionally, you can redirect back or handle as needed
-                // return $this->redirectToRoute('app_booking_new');
             }
 
             $entityManager->persist($booking);
