@@ -26,6 +26,16 @@ final class BookingController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route(path: '/all', name: 'app_booking_index_all', methods: ['GET'])]
+    public function index_all(BookingRepository $bookingRepository): Response
+    {
+        return $this->render('booking/index_all.html.twig', [
+            'bookings' => $bookingRepository->findAll()
+        ]);
+    }
+
+
 
 
     #[IsGranted('ROLE_USER')]
