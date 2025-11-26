@@ -18,7 +18,6 @@
 
     {% if rooms|length == 0 %}
     <p>No room was found yet</p>
-    <a href='/room_add_to_db'><button>Click here to add the rooms to the system</button></a>
     {% endif %}
 
     <div class="rooms-list">
@@ -33,8 +32,11 @@
                     <button type="submit" class="book-btn">Book this room</button>
                 </form>
             </div>
+
         </div>
         {% endfor %}
     </div>
+    <a href="{{ path('app_room', {'page': page - 1}) }}">Prev</a>
+    <a href="{{ path('app_room', {'page': page + 1}) }}">Next</a>
 </div>
 {% endblock %}
