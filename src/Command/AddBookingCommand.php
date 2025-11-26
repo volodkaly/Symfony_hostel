@@ -31,19 +31,24 @@ class AddBookingCommand extends Command
 
 
 
-
         for ($i = 1; $i <= 100; $i++) {
 
             $customers = $this->userRepository->findAll();
-            $customer = $customers[array_rand($customers)];
             $rooms = $this->roomRepository->findAll();
+
+            $customer = $customers[array_rand($customers)];
             $room = $rooms[array_rand($rooms)];
+
+            $startDate = (new \DateTime())->modify('+' . rand(0, 20) . ' days');
+            $endDate = (clone $startDate)->modify('+' . rand(1, 10) . ' days');
+
+            $days = $endDate->diff($startDate)->days;
 
             $booking = (new Booking())
                 ->setCustomer($customer)
-                ->setStartDate((new \DateTime())->modify('-' . rand(0, 365) . ' days'))
-                ->setEndDate((new \DateTime())->modify('+' . rand(1, 10) . ' days'))
-                ->setTotalPrice(4000)
+                ->setStartDate($startDate)
+                ->setEndDate($endDate)
+                ->setTotalPrice($days * (int) $room->getPrice())
                 ->setRoom($room);
 
 
