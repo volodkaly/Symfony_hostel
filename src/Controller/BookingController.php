@@ -32,6 +32,11 @@ final class BookingController extends AbstractController
     {
         $page = $request->query->getInt('page', 1);
 
+        $totalBookings = count($bookingRepository->findAll());
+        $lastPage = (int) ceil($totalBookings / 5);
+
+
+
         $bookings = $bookingRepository->createQueryBuilder('b')
             ->setFirstResult($page * 5 - 5)
             ->setMaxResults(5)
@@ -41,6 +46,7 @@ final class BookingController extends AbstractController
         return $this->render('booking/index_all.html.twig', [
             'bookings' => $bookings,
             'page' => $page,
+            'lastPage' => $lastPage,
         ]);
     }
 
