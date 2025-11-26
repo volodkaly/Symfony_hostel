@@ -55,4 +55,5 @@ class AddBookingCommand extends Command
         return Command::SUCCESS;
     }
 
+
 }
