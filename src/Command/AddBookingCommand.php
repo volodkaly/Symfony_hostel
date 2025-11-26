@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'addBooking',
-    description: 'Add a short description for your command',
+    description: 'mocking 100 bookings',
 )]
 class AddBookingCommand extends Command
 {
