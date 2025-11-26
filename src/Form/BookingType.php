@@ -21,7 +21,6 @@ class BookingType extends AbstractType
             ->add('end_date', null, [
                 'widget' => 'single_text',
             ])
-            ->add('isPaid', ButtonType::class)
             ->add('room', EntityType::class, [
                 'class' => Room::class,
                 'choice_label' => 'id',

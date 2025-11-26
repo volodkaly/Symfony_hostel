@@ -115,6 +115,11 @@ final class BookingController extends AbstractController
     #[Route('/{id}/edit', name: 'app_booking_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Booking $booking, EntityManagerInterface $entityManager): Response
     {
+
+        $isPaid = $request->request->get('isPaid', $booking->getIsPaid());
+
+
+        dump($booking->getIsPaid());
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
 
@@ -124,9 +129,13 @@ final class BookingController extends AbstractController
             return $this->redirectToRoute('app_booking_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $entityManager->persist($booking->setIsPaid($isPaid));
+        $entityManager->flush();
+
         return $this->render('booking/edit.html.twig', [
             'booking' => $booking,
             'form' => $form,
+            'isPaid' => $isPaid,
         ]);
     }
     #[IsGranted('ROLE_ADMIN')]
