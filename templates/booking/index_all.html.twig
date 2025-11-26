@@ -43,4 +43,11 @@
     </table>
 
     <a href="{{ path('app_booking_new') }}">Create new</a>
+
+
+    <a href="{{ path('app_booking_index_all', {'page': 1}) }}">1</a>
+    <a href="{{ path('app_booking_index_all', {'page': 2}) }}">2</a>
+    <a href="{{ path('app_booking_index_all', {'page': page - 1}) }}">Prev</a>
+    <a href="{{ path('app_booking_index_all', {'page': page + 1}) }}">Next</a>
+    
 {% endblock %}

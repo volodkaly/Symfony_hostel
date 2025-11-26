@@ -27,11 +27,20 @@ final class BookingController extends AbstractController
     }
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route(path: '/all', name: 'app_booking_index_all', methods: ['GET'])]
-    public function index_all(BookingRepository $bookingRepository): Response
+    #[Route(path: '/all', name: 'app_booking_index_all', methods: ['POST', 'GET'])]
+    public function index_all(Request $request, BookingRepository $bookingRepository): Response
     {
+        $page = $request->query->getInt('page', 1);
+
+        $bookings = $bookingRepository->createQueryBuilder('b')
+            ->setFirstResult($page * 5 - 5)
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+
         return $this->render('booking/index_all.html.twig', [
-            'bookings' => $bookingRepository->findAll()
+            'bookings' => $bookings,
+            'page' => $page,
         ]);
     }
 
