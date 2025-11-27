@@ -26,6 +26,7 @@
             <h2>{{ room.name }}</h2>
             <div class="room-info">Price: <b>{{ room.price }}</b></div>
             <div class="room-info">Capacity: {{ room.capacity }}</div>
+            <div class="room-info">Rating: {{ room.average_rating }}</div>
             <div class="room-action">
                 <form method="POST" action="{{ path('app_booking_new') }}" data-turbo="false">
                     <input name="chosen_room" type="hidden" value="{{ room.id }}">
