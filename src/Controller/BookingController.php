@@ -6,7 +6,6 @@ use App\Entity\Booking;
 use App\Form\BookingType;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -117,7 +116,7 @@ final class BookingController extends AbstractController
     }
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}/edit', name: 'app_booking_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Booking $booking, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Booking $booking, EntityManagerInterface $entityManager, LoggerInterface $logger): Response
     {
 
         $isPaid = $request->request->get('isPaid', $booking->getIsPaid());
@@ -136,6 +135,8 @@ final class BookingController extends AbstractController
         $entityManager->persist($booking->setIsPaid($isPaid));
         $entityManager->flush();
 
+        $logger->info('custom log: booking ' . $booking->getId() . ' was edited by admin');
+
         return $this->render('booking/edit.html.twig', [
             'booking' => $booking,
             'form' => $form,
@@ -144,12 +145,14 @@ final class BookingController extends AbstractController
     }
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'app_booking_delete', methods: ['POST'])]
-    public function delete(Request $request, Booking $booking, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Booking $booking, EntityManagerInterface $entityManager, LoggerInterface $logger): Response
     {
         if ($this->isCsrfTokenValid('delete' . $booking->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($booking);
             $entityManager->flush();
         }
+
+        $logger->info('custom log: booking ' . $booking->getId() . ' was deleted by admin');
 
         return $this->redirectToRoute('app_booking_index', [], Response::HTTP_SEE_OTHER);
     }
