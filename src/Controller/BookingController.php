@@ -6,12 +6,14 @@ use App\Entity\Booking;
 use App\Form\BookingType;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\Room;
+use Psr\Log\LoggerInterface;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/booking')]
@@ -56,7 +58,7 @@ final class BookingController extends AbstractController
     #[IsGranted('ROLE_USER')]
     #[Route('/new', name: 'app_booking_new', methods: ['GET', 'POST'])]
 
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger): Response
     {
         $booking = new Booking();
         $chosen_room = $request->request->get('chosen_room') ?? null;
@@ -90,6 +92,8 @@ final class BookingController extends AbstractController
 
             $entityManager->persist($booking);
             $entityManager->flush();
+
+            $logger->info('custom log: new booking created:' . $booking->getId() . ' by user: ' . $booking->getCustomer()->getName());
 
             return $this->redirectToRoute('app_booking_index', [], Response::HTTP_SEE_OTHER);
         }
