@@ -40,10 +40,10 @@ Users can register, book rooms, and leave reviews. Admins manage everything via 
 
 I created a few console commands to mock the database quickly. Run them in this specific order to maintain relations:
 
-1.  `php bin/console addRooms` — creates rooms with random prices.
-2.  `php bin/console addUser` — creates 100 regular users.
-3.  `php bin/console addBooking` — makes random bookings.
-4.  `php bin/console addReviews` — adds feedback to those bookings.
+1.  `php bin/console addRooms` — creates rooms with random names, capacities and prices.
+2.  `php bin/console addUser` — creates 100 regular users with random names and emails.
+3.  `php bin/console addBooking` — makes 100 random bookings with random dates for random rooms present in the DB.
+4.  `php bin/console addReviews` — adds 100 reviews with random rating marks 1-5 to those bookings.
 
 ---
 
