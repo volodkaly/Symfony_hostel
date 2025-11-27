@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -32,6 +34,17 @@ class Booking
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     private ?Room $room = null;
+
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'Booking', orphanRemoval: true)]
+    private Collection $Review;
+
+    public function __construct()
+    {
+        $this->Review = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -107,6 +120,36 @@ class Booking
     public function setRoom(?Room $room): static
     {
         $this->room = $room;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReview(): Collection
+    {
+        return $this->Review;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->Review->contains($review)) {
+            $this->Review->add($review);
+            $review->setBooking($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->Review->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getBooking() === $this) {
+                $review->setBooking(null);
+            }
+        }
 
         return $this;
     }
