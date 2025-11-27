@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +23,9 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator, private LoggerInterface $logger)
     {
+
     }
 
     public function authenticate(Request $request): Passport
@@ -31,6 +33,8 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
         $email = $request->get('email'); // якщо ти використовуєш форму POST, getPayload()->getString() не потрібен
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
+
+
 
         return new Passport(
             new UserBadge($email),
@@ -48,6 +52,11 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
+
+        // 2. Використовуємо логер правильно
+        // Можна також додати email користувача для зручності
+        $userIdentifier = $token->getUserIdentifier();
+        $this->logger->info("custom log. User '{$userIdentifier}' logged in successfully.");
 
         // Інакше редірект на головну або будь-яку іншу сторінку
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
