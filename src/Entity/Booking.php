@@ -41,9 +41,16 @@ class Booking
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'Booking', orphanRemoval: true)]
     private Collection $Review;
 
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'booking', orphanRemoval: true)]
+    private Collection $review;
+
     public function __construct()
     {
         $this->Review = new ArrayCollection();
+        $this->review = new ArrayCollection();
     }
 
     public function getId(): ?int

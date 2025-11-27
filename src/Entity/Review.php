@@ -27,6 +27,10 @@ class Review
     #[ORM\JoinColumn(nullable: false)]
     private ?Booking $Booking = null;
 
+    #[ORM\ManyToOne(inversedBy: 'review')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Booking $booking = null;
+
     public function getId(): ?int
     {
         return $this->id;

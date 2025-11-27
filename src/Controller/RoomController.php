@@ -24,12 +24,18 @@ final class RoomController extends AbstractController
         $page = $request->query->getInt('page', 1);
 
         $results = $em->createQueryBuilder()
-            ->select('r', 'AVG(rev.mark) as average_rating') // Вибираємо кімнату + середнє число
+            // 1. Вибираємо Кімнату (r) і середнє від Відгуку (rev)
+            ->select('r', 'AVG(rev.mark) as average_rating')
+            // 2. Головна таблиця - Кімната. Називаємо її 'r'
             ->from(Room::class, 'r')
-            ->leftJoin('r.bookings', 'b') // Приєднуємо бронювання
-            // Приєднуємо відгуки (оскільки зв'язок в Review, а не в Booking, робимо це так):
-            ->leftJoin(Review::class, 'rev', 'WITH', 'rev.Booking = b')
-            ->groupBy('r.id') // Групуємо, щоб рейтинг рахувався окремо для кожної кімнати
+            // 3. Приєднуємо бронювання.
+            // Беремо 'r' (кімнату), йдемо в її поле 'bookings'. Називаємо це 'b'
+            ->leftJoin('r.bookings', 'b')
+            // 4. Приєднуємо відгуки.
+            // Беремо 'b' (бронювання), йдемо в його поле 'review' (з маленької!). Називаємо це 'rev'
+            ->leftJoin('b.review', 'rev')
+            // 5. Групуємо по КІМНАТІ (r.id), щоб отримати середнє для неї
+            ->groupBy('r.id')
             ->setFirstResult($page * 10 - 10)
             ->setMaxResults(10)
             ->getQuery()
