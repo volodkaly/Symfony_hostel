@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Booking;
+use App\Entity\Review;
 use App\Entity\Room;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
@@ -59,6 +60,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Hostel Management');
         yield MenuItem::linkToCrud('Bookings', 'fas fa-calendar-check', Booking::class);
         yield MenuItem::linkToCrud('Rooms', 'fas fa-bed', Room::class);
+        yield MenuItem::linkToCrud('Reviews', 'fas fa-bed', Review::class);
 
         yield MenuItem::section('Users');
         yield MenuItem::linkToCrud('Customers', 'fas fa-users', User::class);
