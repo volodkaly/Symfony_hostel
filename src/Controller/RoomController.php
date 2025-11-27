@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Booking;
+use App\Entity\Review;
 use App\Repository\BookingRepository;
 use App\Repository\ReviewRepository;
 use App\Repository\RoomRepository;
@@ -22,31 +23,26 @@ final class RoomController extends AbstractController
     {
         $page = $request->query->getInt('page', 1);
 
-        $rooms = $em->createQueryBuilder()
-            ->select('r')
+        $results = $em->createQueryBuilder()
+            ->select('r', 'AVG(rev.mark) as average_rating') // Вибираємо кімнату + середнє число
             ->from(Room::class, 'r')
+            ->leftJoin('r.bookings', 'b') // Приєднуємо бронювання
+            // Приєднуємо відгуки (оскільки зв'язок в Review, а не в Booking, робимо це так):
+            ->leftJoin(Review::class, 'rev', 'WITH', 'rev.Booking = b')
+            ->groupBy('r.id') // Групуємо, щоб рейтинг рахувався окремо для кожної кімнати
             ->setFirstResult($page * 10 - 10)
             ->setMaxResults(10)
             ->getQuery()
             ->getArrayResult();
 
-        foreach ($rooms as &$room) {
-            $roomMarks = [];
-            $bookings = $bookingRepository->findBy(['room' => $room['id']]);
-            foreach ($bookings as $booking) {
-                $foundReviews = $reviewRepository->findBy(['Booking' => $booking->getId()]);
-                foreach ($foundReviews as $review) {
-                    $roomMarks[] = $review->getMark();
-                }
-            }
-            if (count($roomMarks) > 0) {
-                $avg = array_sum($roomMarks) / count($roomMarks);
-                $room['average_rating'] = number_format($avg, 2);
-            } else {
-                $room['average_rating'] = 'no rating yet';
-            }
-        }
-        unset($room);
+        // Трохи магії, щоб спростити структуру масиву для Twig
+        // Доктрина повертає: [[0 => [...кімната...], 'average_rating' => 4.5], ...]
+        // Ми робимо: [[...кімната..., 'average_rating' => 4.5], ...]
+        $rooms = array_map(function ($item) {
+            $room = $item[0];
+            $room['average_rating'] = $item['average_rating'] ? number_format($item['average_rating'], 2) : 'N/A';
+            return $room;
+        }, $results);
 
         return $this->render('room/index.html.twig', [
             'controller_name' => 'RoomController',
