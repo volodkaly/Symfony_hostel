@@ -15,6 +15,42 @@ body {
   text-wrap: nowrap;
 }
 
+.login-parent {
+  display: flex;
+  justify-content: end;
+}
+
+.right-menu {
+  position: fixed;
+  right: 0;
+  width: 100px;
+  height: 100vh; /* на всю висоту екрана */
+  padding: 20px;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.right-menu-link {
+  position: fixed;
+  top: 100px;
+  right: 0;
+  width: 200px;
+  height: 100vh; /* на всю висоту екрана */
+  padding: 20px;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
 .wrapper,
 .example-wrapper {
   background: white;

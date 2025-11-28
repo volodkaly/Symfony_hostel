@@ -13,9 +13,13 @@
     {{ parent() }}  
     {% endblock %}
 
+    <div class='right-menu-link'>
+    <a href="{{path('app_booking_index')}}" class='room-card button' >My bookings</a>
+    </div>
+
 
 <div class="example-wrapper">
- <a href="{{path('app_booking_index')}}">My bookings</a>
+ 
     {% if rooms|length == 0 %}
     <p>No room was found yet</p>
     {% endif %}
@@ -41,4 +45,6 @@
     <a href="{{ path('app_room', {'page': page - 1}) }}">Prev</a>
     <a href="{{ path('app_room', {'page': page + 1}) }}">Next</a>
 </div>
+
+
 {% endblock %}
