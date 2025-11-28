@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\Room;
+use Exception;
 use Psr\Log\LoggerInterface;
 
 #[IsGranted('ROLE_USER')]
@@ -68,8 +69,9 @@ final class BookingController extends AbstractController
         $booking->setCustomer($this->getUser());
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        if (empty($chosen_room)) {
+            throw new Exception("Choose a room", 1);
+        } elseif ($form->isSubmitted() && $form->isValid()) {
             // Calculate total price (backend)
             $start = $booking->getStartDate();
             $end = $booking->getEndDate();
@@ -88,6 +90,8 @@ final class BookingController extends AbstractController
             if ($frontendTotal !== null && $backendTotal !== null && $frontendTotal !== $backendTotal) {
                 $this->addFlash('warning', 'Total price mismatch between frontend and backend calculation. Please review your booking.');
             }
+
+
 
             $entityManager->persist($booking);
             $entityManager->flush();

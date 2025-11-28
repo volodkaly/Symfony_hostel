@@ -26,15 +26,15 @@ class AddUserCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        for ($i = 0; $i < 100; $i++) {
 
-            $user = (new User())->setName('User' . rand(20, 100))->setEmail('user' . random_int(10000, 100000) . '@example.com')->setPassword(password_hash(1, PASSWORD_BCRYPT))->setRoles(['ROLE_USER']);
 
-            $this->em->persist($user);
-            $this->em->flush();
+        $user = (new User())->setName('admin')->setEmail('admin')->setPassword(password_hash('admin', PASSWORD_BCRYPT))->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
 
-            echo 'User added: ' . PHP_EOL . $user->getName() . PHP_EOL . 'email: ' . $user->getEmail() . PHP_EOL;
-        }
+        $this->em->persist($user);
+        $this->em->flush();
+
+        echo 'User added: ' . PHP_EOL . $user->getName() . PHP_EOL . 'email: ' . $user->getEmail() . PHP_EOL;
+
 
         return Command::SUCCESS;
     }
