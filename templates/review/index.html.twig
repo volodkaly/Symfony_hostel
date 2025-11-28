@@ -4,6 +4,11 @@
 
 {% block body %}
 
+    {% block header %}
+    {{parent()}}
+    {% endblock %}
+
+
 <div class="example-wrapper">
     <h4>My reviews</h4>
 

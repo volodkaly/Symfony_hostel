@@ -6,11 +6,7 @@
 
 {% block body %}
 <h1>Registration</h1>
-{% for message in app.flashes('error') %}
-    <div class="alert alert-danger">
-        {{ message }}
-    </div>
-{% endfor %}
+
 
 {{ form_start(registrationForm )}}
     {{ form_row(registrationForm.email)}}

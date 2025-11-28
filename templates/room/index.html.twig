@@ -13,9 +13,9 @@
     {{ parent() }}  
     {% endblock %}
 
- <a href="{{path('app_booking_index')}}">My bookings</a>
-<div class="example-wrapper">
 
+<div class="example-wrapper">
+ <a href="{{path('app_booking_index')}}">My bookings</a>
     {% if rooms|length == 0 %}
     <p>No room was found yet</p>
     {% endif %}
