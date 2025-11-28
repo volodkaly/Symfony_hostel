@@ -26,7 +26,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_review_index') }}">back to list</a>
+    <a href="{{ path('app_review_index', {'bookingId': review.booking.id})  }}">back to list</a>
 
     <a href="{{ path('app_review_edit', {'id': review.id}) }}">edit</a>
 

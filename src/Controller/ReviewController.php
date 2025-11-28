@@ -49,7 +49,9 @@ final class ReviewController extends AbstractController
             $entityManager->persist($review);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_review_index', [], Response::HTTP_SEE_OTHER);
+            $bookingId = $review->getBooking()->getId();
+
+            return $this->redirectToRoute('app_review_index', ['bookingId' => $bookingId], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('review/new.html.twig', [
@@ -74,8 +76,12 @@ final class ReviewController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+
+            $bookingId = $review->getBooking()->getId();
+
+            return $this->redirectToRoute('app_review_index', ['bookingId' => $bookingId], Response::HTTP_SEE_OTHER);
+
         }
-        // return $this->redirectToRoute('app_review_index', [], Response::HTTP_SEE_OTHER);
 
 
         return $this->render('review/edit.html.twig', [
@@ -87,11 +93,12 @@ final class ReviewController extends AbstractController
     #[Route('/{id}', name: 'app_review_delete', methods: ['POST'])]
     public function delete(Request $request, Review $review, EntityManagerInterface $entityManager): Response
     {
+        $bookingId = $review->getBooking()->getId();
         if ($this->isCsrfTokenValid('delete' . $review->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($review);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_review_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_review_index', ['bookingId' => $bookingId], Response::HTTP_SEE_OTHER);
     }
 }
