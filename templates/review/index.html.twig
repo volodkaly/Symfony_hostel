@@ -3,7 +3,9 @@
 {% block title %}Review index{% endblock %}
 
 {% block body %}
-    <h1>Review index</h1>
+
+<div class="example-wrapper">
+    <h4>My reviews</h4>
 
 
     <table class="table">
@@ -17,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for review in myReviews %}
+        {% for review in reviews %}
             <tr>
                 <td>{{ review.id }}</td>
                 <td>{{ review.title }}</td>
@@ -37,4 +39,6 @@
     </table>
 
     <a href="{{ path('app_review_new') }}">Create new</a>
+
+    </div>
 {% endblock %}

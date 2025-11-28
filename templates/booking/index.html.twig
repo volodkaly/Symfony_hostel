@@ -6,8 +6,10 @@
     {% block header %}
     {{parent()}}
     {% endblock %}
-    <h1>My bookings</h1>
+    
 
+    <div class="example-wrapper">
+<h4>My bookings</h4>
     <table class="table">
         <thead>
             <tr>
@@ -45,4 +47,6 @@
     </table>
 
     <a href="{{ path('app_booking_new') }}">Create new</a>
+
+    </div>
 {% endblock %}

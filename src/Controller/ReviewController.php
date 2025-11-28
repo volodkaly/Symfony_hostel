@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/review')]
 final class ReviewController extends AbstractController
 {
-    #[Route(name: 'app_review_index', methods: ['GET'])]
+    #[Route(name: 'app_review_index', methods: ['GET', 'POST'])]
     public function index(ReviewRepository $reviewRepository, EntityManagerInterface $em, BookingRepository $bookingRepository, Request $request): Response
     {
         $bookingId = $request->query->getInt('bookingId');
@@ -34,7 +34,7 @@ final class ReviewController extends AbstractController
 
 
         return $this->render('review/index.html.twig', [
-            'myReviews' => $myReviews
+            'reviews' => $myReviews
         ]);
     }
 
@@ -74,9 +74,9 @@ final class ReviewController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_review_index', [], Response::HTTP_SEE_OTHER);
         }
+        // return $this->redirectToRoute('app_review_index', [], Response::HTTP_SEE_OTHER);
+
 
         return $this->render('review/edit.html.twig', [
             'review' => $review,
