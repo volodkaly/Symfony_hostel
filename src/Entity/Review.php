@@ -23,10 +23,6 @@ class Review
     #[ORM\Column(length: 1000, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Review')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Booking $Booking = null;
-
     #[ORM\ManyToOne(inversedBy: 'review')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Booking $booking = null;
@@ -74,12 +70,12 @@ class Review
 
     public function getBooking(): ?Booking
     {
-        return $this->Booking;
+        return $this->booking;
     }
 
-    public function setBooking(?Booking $Booking): static
+    public function setBooking(?Booking $booking): static
     {
-        $this->Booking = $Booking;
+        $this->booking = $booking;
 
         return $this;
     }

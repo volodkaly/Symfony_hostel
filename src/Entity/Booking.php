@@ -38,14 +38,10 @@ class Booking
     /**
      * @var Collection<int, Review>
      */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'Booking', orphanRemoval: true)]
-    private Collection $Review;
-
-    /**
-     * @var Collection<int, Review>
-     */
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'booking', orphanRemoval: true)]
     private Collection $review;
+
+
 
     public function __construct()
     {
@@ -136,13 +132,13 @@ class Booking
      */
     public function getReview(): Collection
     {
-        return $this->Review;
+        return $this->review;
     }
 
     public function addReview(Review $review): static
     {
-        if (!$this->Review->contains($review)) {
-            $this->Review->add($review);
+        if (!$this->review->contains($review)) {
+            $this->review->add($review);
             $review->setBooking($this);
         }
 
@@ -151,7 +147,7 @@ class Booking
 
     public function removeReview(Review $review): static
     {
-        if ($this->Review->removeElement($review)) {
+        if ($this->review->removeElement($review)) {
             // set the owning side to null (unless already changed)
             if ($review->getBooking() === $this) {
                 $review->setBooking(null);

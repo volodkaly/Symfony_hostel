@@ -17,6 +17,7 @@
                 <th>Total_price</th>
                 <th>Is paid</th>
                 <th>actions</th>
+                <th>My reviews</th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +32,10 @@
                     <a href="{{ path('app_booking_show', {'id': booking.id}) }}">show</a>
                     <a href="{{ path('app_booking_edit', {'id': booking.id}) }}">edit</a>
                 </td>
+                <a href="{{ path('app_review_index', {'bookingId': booking.id}) }}">My reviews</a>
+
             </tr>
+            
         {% else %}
             <tr>
                 <td colspan="5">no records found</td>

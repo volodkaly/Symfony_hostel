@@ -13,14 +13,15 @@
     {{ parent() }}  
     {% endblock %}
 
+ <a href="{{path('app_booking_index')}}">My bookings</a>
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
     {% if rooms|length == 0 %}
     <p>No room was found yet</p>
     {% endif %}
 
     <div class="rooms-list">
+    
         {% for room in rooms %}
         <div class="room-card">
             <h2>{{ room.name }}</h2>

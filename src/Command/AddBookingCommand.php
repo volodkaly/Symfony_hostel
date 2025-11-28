@@ -31,12 +31,11 @@ class AddBookingCommand extends Command
 
 
 
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 1; $i++) {
 
-            $customers = $this->userRepository->findAll();
+            $customer = $this->userRepository->findOneBy(['email' => 'admin']);
             $rooms = $this->roomRepository->findAll();
 
-            $customer = $customers[array_rand($customers)];
             $room = $rooms[array_rand($rooms)];
 
             $startDate = (new \DateTime())->modify('+' . rand(0, 20) . ' days');

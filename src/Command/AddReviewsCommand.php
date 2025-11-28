@@ -30,9 +30,9 @@ class AddReviewsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        for ($i = 1; $i <= 100; $i++) {
-            $bookings = $this->bookingRepository->findAll();
-            $booking = $bookings[array_rand($bookings)];
+        for ($i = 1; $i <= 3; $i++) {
+            $booking = $this->bookingRepository->findOneBy(['id' => 109]);
+
 
             $review = new Review();
             $review->setBooking($booking);
