@@ -14,6 +14,12 @@ Users can register, book rooms, and leave reviews. Admins manage everything via 
 
 ### 🚀 How to run it
 
+Install PHP, Symfony CLI and Composer <br>
+
+https://symfony.com/doc/current/setup/symfony_cli.html <br>
+https://www.php.net/downloads.php <br>
+https://getcomposer.org/download/ <br>
+
 1.  **Clone the repository:**
 
     ```bash
