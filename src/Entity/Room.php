@@ -24,6 +24,10 @@ class Room
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Assert\Length(
+        min: 1,
+        max: 4
+    )]
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $capacity = null;
 

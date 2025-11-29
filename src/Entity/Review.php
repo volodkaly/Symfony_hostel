@@ -25,6 +25,9 @@ class Review
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $mark = null;
 
+    #[Assert\Length(
+        max: 1000,
+    )]
     #[ORM\Column(length: 1000, nullable: true)]
     private ?string $description = null;
 
