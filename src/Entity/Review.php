@@ -17,7 +17,7 @@ class Review
 
     #[Assert\Length(
         min: 2,
-        max: 50,
+        max: 10, maxMessage: 'too long'
     )]
     #[ORM\Column(length: 64)]
     private ?string $title = null;

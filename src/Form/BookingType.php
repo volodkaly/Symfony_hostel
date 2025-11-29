@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Booking;
 use App\Entity\Room;
+use PHPUnit\Framework\Constraint\GreaterThan;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -20,6 +21,7 @@ class BookingType extends AbstractType
             ])
             ->add('end_date', null, [
                 'widget' => 'single_text',
+
             ])
             ->add('room', EntityType::class, [
                 'class' => Room::class,

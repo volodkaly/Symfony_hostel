@@ -42,6 +42,7 @@ https://getcomposer.org/download/ <br>
     ```bash
     php bin/console doctrine:database:create
     php bin/console make:migration
+    or symfony console doctrine:migrations:generate
     php bin/console doctrine:migrations:migrate
     ```
 
