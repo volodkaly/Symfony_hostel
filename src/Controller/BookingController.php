@@ -69,9 +69,8 @@ final class BookingController extends AbstractController
         $booking->setCustomer($this->getUser());
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
-        if (empty($chosen_room)) {
-            throw new Exception("Choose a room", 1);
-        } elseif ($form->isSubmitted() && $form->isValid()) {
+
+        if ($form->isSubmitted() && $form->isValid()) {
             // Calculate total price (backend)
             $start = $booking->getStartDate();
             $end = $booking->getEndDate();

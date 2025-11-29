@@ -1,49 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Review index{% endblock %}
+{% block title %}Review index
+{% endblock %}
 
 {% block body %}
 
-    {% block header %}
-    {{parent()}}
-    {% endblock %}
+	{% block header %}
+		{{parent()}}
+	{% endblock %}
 
 
-<div class="example-wrapper">
-    <h4>My reviews</h4>
+	<div class="example-wrapper">
+		<a href="{{path('app_room')}}">
+			<h4>All rooms</h4>
+		</a>
+		<h4>My reviews</h4>
 
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Mark</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for review in reviews %}
-            <tr>
-                <td>{{ review.id }}</td>
-                <td>{{ review.title }}</td>
-                <td>{{ review.mark }}</td>
-                <td>{{ review.description }}</td>
-                <td>
-                    <a href="{{ path('app_review_show', {'id': review.id}) }}">show</a>
-                    <a href="{{ path('app_review_edit', {'id': review.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Title</th>
+					<th>Mark</th>
+					<th>Description</th>
+					<th>actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for review in reviews %}
+					<tr>
+						<td>{{ review.id }}</td>
+						<td>{{ review.title }}</td>
+						<td>{{ review.mark }}</td>
+						<td>{{ review.description }}</td>
+						<td>
+							<a href="{{ path('app_review_show', {'id': review.id}) }}">show</a>
+							<a href="{{ path('app_review_edit', {'id': review.id}) }}">edit</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="5">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 
-    <a href="{{ path('app_review_new') }}">Create new</a>
+		<a href="{{ path('app_review_new') }}">Create new</a>
 
-    </div>
+	</div>
 {% endblock %}
