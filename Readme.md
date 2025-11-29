@@ -63,3 +63,5 @@ I created a few console commands to mock the database quickly. Run them in this 
 - **Price Calculation:** There is a JS script in the booking form that automatically updates the total price when you change dates.
 - **Admin Panel:** You can access it at `/admin`. It handles all the CRUD operations and allows you to toggle payment statuses.
 - **Logs:** Custom logs are written when a new booking is created.
+
+.
