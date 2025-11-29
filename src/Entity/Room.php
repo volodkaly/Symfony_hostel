@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
 class Room
@@ -16,12 +17,17 @@ class Room
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+    )]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $capacity = null;
 
+    #[Assert\LessThanOrEqual(1000)]
     #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 2)]
     private ?string $price = null;
 

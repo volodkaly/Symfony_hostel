@@ -22,7 +22,6 @@ class BookingCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
             DateField::new('start_date'),
             DateField::new('end_date'),
             BooleanField::new('is_paid'),
