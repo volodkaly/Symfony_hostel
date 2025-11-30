@@ -15,10 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'addBooking',
+    name: 'add100Bookings',
     description: 'mocking 100 bookings',
 )]
-class AddBookingCommand extends Command
+class Add100BookingsCommand extends Command
 {
     public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository, private RoomRepository $roomRepository)
     {

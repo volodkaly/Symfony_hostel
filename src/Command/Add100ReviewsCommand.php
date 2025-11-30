@@ -16,10 +16,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ReviewRepository;
 
 #[AsCommand(
-    name: 'addReviews',
+    name: 'add100Reviews',
     description: 'Mocks 100 reviews',
 )]
-class AddReviewsCommand extends Command
+class Add100ReviewsCommand extends Command
 {
     public function __construct(private EntityManagerInterface $em, private ReviewRepository $reviewRepository, private BookingRepository $bookingRepository)
     {

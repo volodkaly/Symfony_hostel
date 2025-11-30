@@ -15,10 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'addRooms',
+    name: 'addRoom',
     description: 'mocking 1 room',
 )]
-class AddRoomsCommand extends Command
+class AddRoomCommand extends Command
 {
     public function __construct(private EntityManagerInterface $em)
     {
@@ -29,7 +29,7 @@ class AddRoomsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $room = (new Room())->setName('Room' . rand(20, 100))->setCapacity(rand(1, 8))->setPrice(rand(200, 300));
+        $room = (new Room())->setName('Room' . rand(20, 100))->setCapacity(rand(1, 4))->setPrice(rand(50, 1000));
 
         $this->em->persist($room);
         $this->em->flush();
