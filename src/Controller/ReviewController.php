@@ -34,22 +34,24 @@ final class ReviewController extends AbstractController
 
 
         return $this->render('review/index.html.twig', [
-            'reviews' => $myReviews
+            'reviews' => $myReviews,
+            'bookingId' => $bookingId
         ]);
     }
 
     #[Route('/new', name: 'app_review_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, BookingRepository $bookingRepository): Response
     {
+        $bookingId = $request->query->getInt('bookingId');
         $review = new Review();
+       
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $review->setBooking($bookingRepository->findOneBy(['id'=>$bookingId]));
             $entityManager->persist($review);
             $entityManager->flush();
-
-            $bookingId = $review->getBooking()->getId();
 
             return $this->redirectToRoute('app_review_index', ['bookingId' => $bookingId], Response::HTTP_SEE_OTHER);
         }

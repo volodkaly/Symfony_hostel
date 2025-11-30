@@ -28,12 +28,7 @@ class ReviewType extends AbstractType
                 ],
 
             ])
-            ->add('description')
-            ->add('booking', EntityType::class, [
-                'class' => Booking::class,
-                'choice_label' => 'id',
-            ])
-        ;
+            ->add('description');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

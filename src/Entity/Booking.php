@@ -18,15 +18,11 @@ class Booking
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\GreaterThan(
-        'yesterday', message: 'This value should be greater than {{ compared_value }}'
-    )]
+    #[Assert\GreaterThan('yesterday')]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $start_date = null;
 
-    #[Assert\GreaterThan(
-        'today'
-    )]
+    #[Assert\GreaterThan('yesterday')]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $end_date = null;
 
