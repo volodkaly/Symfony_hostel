@@ -18,7 +18,7 @@ class ReviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class, ['constraints' => new Length(max: 10), 'invalid_message' => false])
+            ->add('title', TextType::class)
             ->add('mark', RangeType::class, [
                 'attr' => [
                     'min' => 0,

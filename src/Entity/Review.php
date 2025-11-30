@@ -17,11 +17,15 @@ class Review
 
     #[Assert\Length(
         min: 2,
-        max: 10, maxMessage: 'too long'
+        max: 10
     )]
     #[ORM\Column(length: 64)]
     private ?string $title = null;
 
+    #[Assert\Range(
+        min: 1,
+        max: 5,
+    )]
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $mark = null;
 
