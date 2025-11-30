@@ -55,7 +55,9 @@
 				</div>
 			{% endfor %}
 		</div>
+		    {% if page > 1 %}
 		<a href="{{ path('app_room', {'page': page - 1}) }}">Prev</a>
+		{% endif %}
 		<a href="{{ path('app_room', {'page': page + 1}) }}">Next</a>
 	</div>
 
