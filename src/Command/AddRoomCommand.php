@@ -6,6 +6,7 @@ use App\Entity\Room;
 use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class AddRoomCommand extends Command
 {
-    public function __construct(private EntityManagerInterface $em)
+    public function __construct(private EntityManagerInterface $em, private LoggerInterface $logger)
     {
         parent::__construct();
     }
@@ -35,6 +36,7 @@ class AddRoomCommand extends Command
         $this->em->flush();
 
         echo 'Room added: ' . PHP_EOL . $room->getName() . PHP_EOL . 'price: ' . $room->getPrice() . PHP_EOL . 'capacity: ' . $room->getCapacity() . PHP_EOL;
+        $this->logger->info('custom log: 1 room was mocked');
         return Command::SUCCESS;
     }
 }

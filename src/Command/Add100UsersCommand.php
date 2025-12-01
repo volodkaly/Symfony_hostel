@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class Add100UsersCommand extends Command
 {
-    public function __construct(private EntityManagerInterface $em)
+    public function __construct(private EntityManagerInterface $em, private LoggerInterface $logger)
     {
         parent::__construct();
     }
@@ -36,6 +37,7 @@ class Add100UsersCommand extends Command
             echo 'User added: ' . PHP_EOL . $user->getName() . PHP_EOL . 'email: ' . $user->getEmail() . PHP_EOL;
         }
 
+        $this->logger->info('custom log: users were mocked');
         return Command::SUCCESS;
     }
 }

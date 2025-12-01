@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Review;
 use App\Repository\BookingRepository;
 use Dom\Entity;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,7 +22,7 @@ use App\Repository\ReviewRepository;
 )]
 class Add100ReviewsCommand extends Command
 {
-    public function __construct(private EntityManagerInterface $em, private ReviewRepository $reviewRepository, private BookingRepository $bookingRepository)
+    public function __construct(private EntityManagerInterface $em, private ReviewRepository $reviewRepository, private BookingRepository $bookingRepository, private LoggerInterface $logger)
     {
         parent::__construct();
     }
@@ -45,7 +46,7 @@ class Add100ReviewsCommand extends Command
             $this->em->clear();
 
         }
-
+        $this->logger->info('custom log: reviews were mocked');
         return Command::SUCCESS;
     }
 }

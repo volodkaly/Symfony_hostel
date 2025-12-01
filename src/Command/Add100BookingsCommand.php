@@ -6,6 +6,7 @@ use App\Entity\Booking;
 use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class Add100BookingsCommand extends Command
 {
-    public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository, private RoomRepository $roomRepository)
+    public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository, private RoomRepository $roomRepository, private LoggerInterface $logger)
     {
         parent::__construct();
     }
@@ -56,7 +57,7 @@ class Add100BookingsCommand extends Command
             $this->entityManager->flush();
             $this->entityManager->clear();
         }
-
+        $this->logger->info('custom log: bookings were mocked');
         return Command::SUCCESS;
     }
 
