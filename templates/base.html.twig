@@ -22,11 +22,11 @@
     {% block body %}
       <header>
         {% block header %}
-          <div class="right-menu">
+          <div class="login">
             {% if app.user %}
-              <a href="{{ path('app_logout') }}" class="login-child"><img src="{{ asset('icons/logout.png') }}" style="height=50; margin=auto;" alt="logout" /></a>
+              <a href="{{ path('app_logout') }}" class="login-child"><img src="{{ asset('icons/logout.png') }}" height="50" alt="logout" /></a>
             {% else %}
-              <a href="{{ path('app_login') }}" class="login-child"><img src="{{ asset('icons/login.png') }}" style="height=50; margin=auto;" alt="login" /></a>
+              <a href="{{ path('app_login') }}" class="login-child"><img src="{{ asset('icons/login.png') }}" height="50" alt="login" /></a>
             {% endif %}
           </div>
 
