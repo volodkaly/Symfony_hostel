@@ -1,13 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Booking
+{% block title %}
+  New Booking
 {% endblock %}
 
 {% block body %}
-	<h1>Create new Booking</h1>
+  <h1>Create new Booking</h1>
+  {{ 'Price per night: ' }}<span id="price">{{ price }}</span>
+  {{ 'Total price: ' }}<span id="total_price"></span>
+  {{ include('booking/_form.html.twig') }}
 
-	{{ include('booking/_form.html.twig') }}
+  <script>
+    let booking_start_date = null
+    let booking_end_date = null
+    
+    document.getElementById('booking_start_date').addEventListener('change', () => {
+      booking_start_date = document.getElementById('booking_start_date').value
+    })
+    
+    document.getElementById('booking_end_date').addEventListener('change', () => {
+      booking_end_date = document.getElementById('booking_end_date').value
+    
+      if (booking_start_date && booking_end_date) {
+        const diffMs = new Date(booking_end_date) - new Date(booking_start_date)
+        const diffDays = diffMs / (1000 * 60 * 60 * 24)
+        console.log(diffDays) // number of days
+    
+        const pr = parseFloat(document.getElementById('price').innerText)
+    
+        if (!isNaN(pr)) {
+          document.getElementById('booking_total_price').value = pr * diffDays
+          document.getElementById('total_price').innerText = document.getElementById('booking_total_price').value
+        } else {
+          console.error('Invalid price value')
+        }
+      }
+    })
+  </script>
 
-
-	<a href="{{ path('app_booking_index') }}">back to list</a>
+  <a href="{{ path('app_booking_index') }}">back to list</a>
 {% endblock %}

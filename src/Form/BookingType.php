@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -30,7 +31,7 @@ class BookingType extends AbstractType
                 'class' => Room::class,
                 'choice_label' => 'id',
             ])
-            ->add('total_price', null, [
+            ->add('total_price', HiddenType::class, [
                 'mapped' => false,
                 'attr' => ['type' => 'hidden'],
                 'required' => false,

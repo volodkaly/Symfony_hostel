@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Booking;
 use App\Form\BookingType;
 use App\Repository\BookingRepository;
+use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\Room;
 use Exception;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/booking')]
@@ -71,10 +73,21 @@ final class BookingController extends AbstractController
     #[IsGranted('ROLE_USER')]
     #[Route('/new', name: 'app_booking_new', methods: ['GET', 'POST'])]
 
-    public function new(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger, RoomRepository $roomRepository, SessionInterface $session): Response
     {
         $booking = new Booking();
-        $chosen_room = $request->request->get('chosen_room') ?? null;
+
+        if ($chosen_room = $request->request->get('chosen_room')) {
+            $session->set('chosen_room', $chosen_room);
+        }
+        $chosen_room = $session->get('chosen_room', null);
+
+        $price = 0;
+        if ($chosen_room) {
+            $chosen_room_object = $roomRepository->find($chosen_room);
+            $price = $chosen_room_object->getPrice();
+        }
+
         if ($chosen_room) {
             $booking->setRoom($entityManager->getRepository(Room::class)->find($chosen_room));
         }
@@ -121,6 +134,7 @@ final class BookingController extends AbstractController
             'booking' => $booking,
             'form' => $form,
             'chosen_room' => $chosen_room,
+            'price' => $price
         ]);
     }
     #[IsGranted('ROLE_USER')]
