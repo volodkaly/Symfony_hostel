@@ -23,17 +23,17 @@ final class BookingController extends AbstractController
     #[Route(name: 'app_booking_index', methods: ['GET'])]
     public function index(BookingRepository $bookingRepository, EntityManagerInterface $em, Request $request): Response
     {
-        $page = $request->query->getInt('page',1);
+        $page = $request->query->getInt('page', 1);
 
-        $bookings = $em->createQueryBuilder('qb')
-        ->select('bookings')
-        ->from(Booking::class,'bookings')
-        ->where('bookings.customer = :customer')
-        ->setParameter('customer', $this->getUser())
-        ->setFirstResult($page*10-10)
-        ->setMaxResults(10)
-        ->getQuery()
-        ->getResult();
+        $bookings = $em->createQueryBuilder()
+            ->select('bookings')
+            ->from(Booking::class, 'bookings')
+            ->where('bookings.customer = :customer')
+            ->setParameter('customer', $this->getUser())
+            ->setFirstResult($page * 10 - 10)
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
 
         return $this->render('booking/index.html.twig', [
             'bookings' => $bookings,
@@ -105,9 +105,10 @@ final class BookingController extends AbstractController
 
 
 
+
             $entityManager->persist($booking);
             $entityManager->flush();
-
+            $this->addFlash('success', 'Booking was created');
             $logger->info('custom log: new booking created:' . $booking->getId() . ' by user: ' . $booking->getCustomer()->getName());
 
             return $this->redirectToRoute('app_booking_index', [], Response::HTTP_SEE_OTHER);
