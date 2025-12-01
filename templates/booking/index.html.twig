@@ -1,65 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Booking index
+{% block title %}
+  Booking index
 {% endblock %}
 
 {% block body %}
-	{% block header %}
-		{{parent()}}
-	{% endblock %}
+  {% block header %}
+    {{ parent() }}
+  {% endblock %}
 
-	<div class="example-wrapper">
-		<a href="{{path('app_room')}}">
-			<h4>All rooms</h4>
-		</a>
-		<h4>My bookings</h4>
+  <div class="example-wrapper">
+    <a href="{{ path('app_room') }}"><h4>All rooms</h4></a>
+    <h4>My bookings</h4>
 
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Start_date</th>
+          <th>End_date</th>
+          <th>Total_price</th>
+          <th>Is paid</th>
+          <th>Actions</th>
+          <th>Booking reviews</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+          <tr>
+            <td>{{ booking.id }}</td>
+            <td>{{ booking.startDate ? booking.startDate|date('Y-m-d') : '' }}</td>
+            <td>{{ booking.endDate ? booking.endDate|date('Y-m-d') : '' }}</td>
+            <td>{{ booking.totalPrice }}</td>
+            <td>{{ booking.isPaid ? 'paid' : 'not paid' }}</td>
+            <td>
+              <a href="{{ path('app_booking_show', { id: booking.id }) }}">show</a>
+              <a href="{{ path('app_booking_edit', { id: booking.id }) }}">edit</a>
+            </td>
+            <td>
+              <a href="{{ path('app_review_index', { bookingId: booking.id }) }}">My booking reviews</a>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="5">no records found</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Id</th>
-					<th>Start_date</th>
-					<th>End_date</th>
-					<th>Total_price</th>
-					<th>Is paid</th>
-					<th>actions</th>
-					<th>Booking reviews</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for booking in bookings %}
-					<tr>
-						<td>{{ booking.id }}</td>
-						<td>{{ booking.startDate ? booking.startDate|date('Y-m-d') : '' }}</td>
-						<td>{{ booking.endDate ? booking.endDate|date('Y-m-d') : '' }}</td>
-						<td>{{ booking.totalPrice }}</td>
-						<td>{{ booking.isPaid ? 'paid':'not paid' }}</td>
-						<td>
-							<a href="{{ path('app_booking_show', {'id': booking.id}) }}">show</a>
-							<a href="{{ path('app_booking_edit', {'id': booking.id}) }}">edit</a>
-						</td>
-						<td>
-						<a href="{{ path('app_review_index', {'bookingId': booking.id}) }}">My booking reviews</a>
-						</td>
-					</tr>
-
-				{% else %}
-					<tr>
-						<td colspan="5">no records found</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-
-		{#  <a href="{{ path('app_booking_new') }}">Create new</a> #}
-		{% if page > 1 %}
-    	<a href="{{ path('app_booking_index', {'page': page - 1}) }}">Prev</a>
-		{% endif %}
-		<a href="{{ path('app_booking_index', {'page': page + 1}) }}">Next</a>
-
-	</div>
-	{#wrapper end#}
-
-
+    {# <a href="{{ path('app_booking_new') }}">Create new</a> #}
+    {% if page > 1 %}
+      <a href="{{ path('app_booking_index', { page: page - 1 }) }}">Prev</a>
+    {% endif %}
+    <a href="{{ path('app_booking_index', { page: page + 1 }) }}">Next</a>
+  </div>
+  {# wrapper end #}
 {% endblock %}
