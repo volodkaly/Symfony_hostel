@@ -1,15 +1,12 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}
   New Booking
 {% endblock %}
-
 {% block body %}
   <h1>Create new Booking</h1>
   {{ 'Price per night: ' }}<span id="price">{{ price }}</span>
   {{ 'Total price: ' }}<span id="total_price"></span>
   {{ include('booking/_form.html.twig') }}
-
   <script>
     let booking_start_date = null
     let booking_end_date = null
@@ -37,6 +34,5 @@
       }
     })
   </script>
-
   <a href="{{ path('app_booking_index') }}">back to list</a>
 {% endblock %}

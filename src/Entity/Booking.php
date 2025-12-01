@@ -64,7 +64,6 @@ class Booking
     public function setStartDate(\DateTime $start_date): static
     {
         $this->start_date = $start_date;
-
         return $this;
     }
 
