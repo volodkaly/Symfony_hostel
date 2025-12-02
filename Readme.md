@@ -50,14 +50,15 @@ https://getcomposer.org/download/ <br>
 
 ### 📦 Seeding Data
 
-I created a few console commands to mock the database quickly. Run them in this specific order to maintain relations:
+I created a few console commands to mock the database quickly.<br>
+Run them in this specific order to maintain relations:
 
 ```
-php bin/console add100Bookings
-php bin/console add100Reviews
+php bin/console addAdmin
 php bin/console add100Users
 php bin/console addRoom
-php bin/console addAdmin
+php bin/console add100Bookings
+php bin/console add100Reviews
 
 ```
 
