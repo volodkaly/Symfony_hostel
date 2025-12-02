@@ -2,37 +2,55 @@
 {% block title %}
   New Booking
 {% endblock %}
+
 {% block body %}
+  {% block header %}
+    {{ parent() }}
+  {% endblock %}
   <h1>Create new Booking</h1>
   {{ 'Price per night: ' }}<span id="price">{{ price }}</span>
   {{ 'Total price: ' }}<span id="total_price"></span>
   {{ include('booking/_form.html.twig') }}
   <script>
-    let booking_start_date = null
-    let booking_end_date = null
+    document.addEventListener('DOMContentLoaded', function () {
+      const startDateInput = document.getElementById('booking_start_date')
+      const endDateInput = document.getElementById('booking_end_date')
+      const totalPriceInput = document.getElementById('booking_total_price')
+      const totalPriceSpan = document.getElementById('total_price')
+      const pricePerNightSpan = document.getElementById('price')
     
-    document.getElementById('booking_start_date').addEventListener('change', () => {
-      booking_start_date = document.getElementById('booking_start_date').value
-    })
+      function calculatePrice() {
+        const startDateValue = startDateInput.value
+        const endDateValue = endDateInput.value
     
-    document.getElementById('booking_end_date').addEventListener('change', () => {
-      booking_end_date = document.getElementById('booking_end_date').value
+        if (startDateValue && endDateValue) {
+          const diffMs = new Date(endDateValue) - new Date(startDateValue)
+          const diffDays = diffMs / (1000 * 60 * 60 * 24)
     
-      if (booking_start_date && booking_end_date) {
-        const diffMs = new Date(booking_end_date) - new Date(booking_start_date)
-        const diffDays = diffMs / (1000 * 60 * 60 * 24)
-        console.log(diffDays) // number of days
+          // Отримуємо ціну за ніч
+          const pr = parseFloat(pricePerNightSpan.innerText)
     
-        const pr = parseFloat(document.getElementById('price').innerText)
-    
-        if (!isNaN(pr)) {
-          document.getElementById('booking_total_price').value = pr * diffDays
-          document.getElementById('total_price').innerText = document.getElementById('booking_total_price').value
-        } else {
-          console.error('Invalid price value')
+          if (!isNaN(pr) && diffDays > 0) {
+            const total = (pr * diffDays).toFixed(2) // Форматуємо до 2 знаків
+            totalPriceInput.value = total
+            totalPriceSpan.innerText = total
+          } else {
+            totalPriceInput.value = ''
+            totalPriceSpan.innerText = '0'
+          }
         }
+      }
+    
+      // Слухаємо зміни
+      startDateInput.addEventListener('change', calculatePrice)
+      endDateInput.addEventListener('change', calculatePrice)
+    
+      // !! ВАЖЛИВО: Запускаємо розрахунок одразу, якщо дати вже заповнені (після помилки)
+      if (startDateInput.value && endDateInput.value) {
+        calculatePrice()
       }
     })
   </script>
-  <a href="{{ path('app_booking_index') }}">back to list</a>
+
+  <a href="{{ path('app_booking_index') }}" class="btn btn-primary">back to list</a>
 {% endblock %}

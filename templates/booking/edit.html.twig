@@ -1,26 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Booking{% endblock %}
+{% block title %}
+  Edit Booking
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Booking</h1>
+  <h1>Edit Booking</h1>
 
-    {{ include('booking/_form.html.twig', {'button_label': 'Update'}) }}
-    {% if 'ROLE_ADMIN' in app.user.roles %}
+  {{ include('booking/_form.html.twig', { button_label: 'Update' }) }}
+  {% if 'ROLE_ADMIN' in app.user.roles %}
+    {{ booking.isPaid ? 'This booking is paid' : 'This booking is not paid' }}
 
-
-    {{ booking.isPaid? 'This booking is paid' : 'This booking is not paid' }}
-
-    
-    <form action = "edit" method="post" data-turbo="false">
-        <input type="hidden" name="isPaid" value={{ booking.isPaid ? 0 : 1 }}>
-        <button type="submit">Change Payment Status</button>
+    <form action="edit" method="post" data-turbo="false">
+      <input type="hidden" name="isPaid" value="{{ booking.isPaid ? 0 : 1 }}" />
+      <button type="submit">Change Payment Status</button>
     </form>
 
-    <a href="{{ path('app_booking_index_all') }}">back to list</a>
-    {% else %}
-    <a href="{{ path('app_booking_index') }}">back to list</a>
-    {% endif %}
+    <a href="{{ path('app_booking_index_all') }}" class="btn btn-primary">back to list</a>
+  {% else %}
+    <a href="{{ path('app_booking_index') }}" class="btn btn-primary">back to list</a>
+  {% endif %}
 
-    {{ include('booking/_delete_form.html.twig') }}
+  {{ include('booking/_delete_form.html.twig') }}
 {% endblock %}

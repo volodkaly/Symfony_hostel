@@ -32,8 +32,8 @@
           <td>{{ booking.isPaid ? 'paid' : 'not paid' }}</td>
           <td>{{ booking.customer.email }}</td>
           <td>
-            <a href="{{ path('app_booking_show', { id: booking.id }) }}">show</a>
-            <a href="{{ path('app_booking_edit', { id: booking.id }) }}">edit</a>
+            <a href="{{ path('app_booking_show', { id: booking.id }) }}" class="btn btn-primary">show</a>
+            <a href="{{ path('app_booking_edit', { id: booking.id }) }}" class="btn btn-primary">edit</a>
           </td>
         </tr>
       {% else %}

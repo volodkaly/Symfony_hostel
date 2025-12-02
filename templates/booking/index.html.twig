@@ -34,11 +34,11 @@
             <td>{{ booking.totalPrice }}</td>
             <td>{{ booking.isPaid ? 'paid' : 'not paid' }}</td>
             <td>
-              <a href="{{ path('app_booking_show', { id: booking.id }) }}">show</a>
-              <a href="{{ path('app_booking_edit', { id: booking.id }) }}">edit</a>
+              <a href="{{ path('app_booking_show', { id: booking.id }) }}" class="btn btn-primary">show</a>
+              <a href="{{ path('app_booking_edit', { id: booking.id }) }}" class="btn btn-primary">edit</a>
             </td>
             <td>
-              <a href="{{ path('app_review_index', { bookingId: booking.id }) }}">My booking reviews</a>
+              <a href="{{ path('app_review_index', { bookingId: booking.id }) }}" class="btn btn-primary">My booking reviews</a>
             </td>
           </tr>
         {% else %}

@@ -17,6 +17,11 @@ body {
 
 .alert {
   animation: simple-fadeout 5s forwards;
+  position: fixed;
+  top: 20px;
+  z-index: 1000;
+  width: 100vw;
+  height: 50px;
 }
 
 @keyframes simple-fadeout {

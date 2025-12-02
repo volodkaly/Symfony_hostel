@@ -68,11 +68,8 @@ final class BookingController extends AbstractController
     }
 
 
-
-
     #[IsGranted('ROLE_USER')]
     #[Route('/new', name: 'app_booking_new', methods: ['GET', 'POST'])]
-
     public function new(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger, RoomRepository $roomRepository, SessionInterface $session): Response
     {
         $booking = new Booking();
@@ -102,33 +99,37 @@ final class BookingController extends AbstractController
             $end = $booking->getEndDate();
             $room = $booking->getRoom();
             $backendTotal = null;
+
             if ($start && $end && $room) {
                 $interval = $start->diff($end);
                 $days = $interval->days;
                 $pricePerDay = method_exists($room, 'getPrice') ? (float) $room->getPrice() : 0;
+                // Форматуємо як строку, щоб збігалося з форматом бази даних
                 $backendTotal = number_format($days * $pricePerDay, 2, '.', '');
                 $booking->setTotalPrice($backendTotal);
             }
 
-            // Get frontend total price from hidden field
             $frontendTotal = $form->get('total_price')->getData();
-            if ($frontendTotal !== null && $backendTotal !== null && $frontendTotal !== $backendTotal) {
-                $this->addFlash('warning', 'Total price mismatch between frontend and backend calculation. Please review your booking.');
+
+            if ($frontendTotal !== $backendTotal) {
+                $this->addFlash('warning', 'Price mismatch. Please try again.');
+
+                return $this->render('booking/new.html.twig', [
+                    'booking' => $booking,
+                    'form' => $form,
+                    'chosen_room' => $chosen_room,
+                    'price' => $price
+                ], new Response('', 422));
             }
-
-
-
 
             $entityManager->persist($booking);
             $entityManager->flush();
+
             $this->addFlash('success', 'Booking was created');
             $logger->info('custom log: new booking created:' . $booking->getId() . ' by user: ' . $booking->getCustomer()->getName());
 
             return $this->redirectToRoute('app_booking_index', [], Response::HTTP_SEE_OTHER);
         }
-
-
-
 
         return $this->render('booking/new.html.twig', [
             'booking' => $booking,
@@ -137,6 +138,8 @@ final class BookingController extends AbstractController
             'price' => $price
         ]);
     }
+
+
     #[IsGranted('ROLE_USER')]
     #[Route('/{id}', name: 'app_booking_show', methods: ['GET'])]
     public function show(Booking $booking): Response
