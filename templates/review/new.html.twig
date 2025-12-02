@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block body %}
+  {% block header %}
+    {{ parent() }}
+  {% endblock %}
   <h1>Create new Review</h1>
 
   {{ include('review/_form.html.twig') }}

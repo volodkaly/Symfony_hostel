@@ -7,6 +7,7 @@ use App\Form\ReviewType;
 use App\Repository\BookingRepository;
 use App\Repository\ReviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,18 +41,21 @@ final class ReviewController extends AbstractController
     }
 
     #[Route('/new', name: 'app_review_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, BookingRepository $bookingRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, BookingRepository $bookingRepository, LoggerInterface $logger): Response
     {
         $bookingId = $request->query->getInt('bookingId');
         $review = new Review();
-       
+
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $review->setBooking($bookingRepository->findOneBy(['id'=>$bookingId]));
+            $review->setBooking($bookingRepository->findOneBy(['id' => $bookingId]));
             $entityManager->persist($review);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Review was created');
+            $logger->info('custom log: review ' . $review->getId() . ' was created by user ' . $this->getUser()->getUserIdentifier());
 
             return $this->redirectToRoute('app_review_index', ['bookingId' => $bookingId], Response::HTTP_SEE_OTHER);
         }
@@ -71,7 +75,7 @@ final class ReviewController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_review_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Review $review, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Review $review, EntityManagerInterface $entityManager, LoggerInterface $logger): Response
     {
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
@@ -80,6 +84,10 @@ final class ReviewController extends AbstractController
             $entityManager->flush();
 
             $bookingId = $review->getBooking()->getId();
+
+            $this->addFlash('success', 'Review was edited');
+            $logger->info('custom log: review ' . $review->getId() . ' was edited by user ' . $this->getUser()->getUserIdentifier());
+
 
             return $this->redirectToRoute('app_review_index', ['bookingId' => $bookingId], Response::HTTP_SEE_OTHER);
 
@@ -93,13 +101,16 @@ final class ReviewController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_review_delete', methods: ['POST'])]
-    public function delete(Request $request, Review $review, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Review $review, EntityManagerInterface $entityManager, LoggerInterface $logger): Response
     {
         $bookingId = $review->getBooking()->getId();
         if ($this->isCsrfTokenValid('delete' . $review->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($review);
             $entityManager->flush();
         }
+
+        $this->addFlash('success', 'Review was deleted');
+        $logger->info('custom log: review ' . $review->getId() . ' was deleted by user ' . $this->getUser()->getUserIdentifier());
 
         return $this->redirectToRoute('app_review_index', ['bookingId' => $bookingId], Response::HTTP_SEE_OTHER);
     }

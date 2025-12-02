@@ -168,6 +168,7 @@ final class BookingController extends AbstractController
         $entityManager->flush();
 
         $logger->info('custom log: booking ' . $booking->getId() . ' was edited by admin');
+        $this->addFlash('success', 'Booking was edited');
 
         return $this->render('booking/edit.html.twig', [
             'booking' => $booking,
@@ -185,6 +186,7 @@ final class BookingController extends AbstractController
         }
 
         $logger->info('custom log: booking ' . $booking->getId() . ' was deleted by admin');
+        $this->addFlash('success', 'Booking was deleted');
 
         return $this->redirectToRoute('app_booking_index', [], Response::HTTP_SEE_OTHER);
     }
