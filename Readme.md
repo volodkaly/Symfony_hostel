@@ -53,11 +53,11 @@ https://getcomposer.org/download/ <br>
 I created a few console commands to mock the database quickly. Run them in this specific order to maintain relations:
 
 ```
-php bin/console add100Bookings Mocking 100 bookings
-php bin/console add100Reviews Mocks 100 reviews
-php bin/console add100Users Mocking 100 users (not admins)
-php bin/console addRoom Mocking 1 room
-php bin/console addAdmin Mocking 1 admin
+php bin/console add100Bookings
+php bin/console add100Reviews
+php bin/console add100Users
+php bin/console addRoom
+php bin/console addAdmin
 
 ```
 
