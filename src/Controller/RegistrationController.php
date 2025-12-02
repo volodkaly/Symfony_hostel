@@ -27,7 +27,6 @@ final class RegistrationController extends AbstractController
             $data = $form->getData();
             $email = $data->getEmail();
 
-            // Перевірка чи існує вже користувач
             $existingUser = $em->getRepository(User::class)->findOneBy(['email' => $email]);
             if ($existingUser) {
                 $this->addFlash('error', 'Цей email вже зареєстрований!');

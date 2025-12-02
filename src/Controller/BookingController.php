@@ -94,7 +94,6 @@ final class BookingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Calculate total price (backend)
             $start = $booking->getStartDate();
             $end = $booking->getEndDate();
             $room = $booking->getRoom();
@@ -104,7 +103,6 @@ final class BookingController extends AbstractController
                 $interval = $start->diff($end);
                 $days = $interval->days;
                 $pricePerDay = method_exists($room, 'getPrice') ? (float) $room->getPrice() : 0;
-                // Форматуємо як строку, щоб збігалося з форматом бази даних
                 $backendTotal = number_format($days * $pricePerDay, 2, '.', '');
                 $booking->setTotalPrice($backendTotal);
             }

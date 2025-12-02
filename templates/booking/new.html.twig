@@ -26,12 +26,9 @@
         if (startDateValue && endDateValue) {
           const diffMs = new Date(endDateValue) - new Date(startDateValue)
           const diffDays = diffMs / (1000 * 60 * 60 * 24)
-    
-          // Отримуємо ціну за ніч
           const pr = parseFloat(pricePerNightSpan.innerText)
-    
           if (!isNaN(pr) && diffDays > 0) {
-            const total = (pr * diffDays).toFixed(2) // Форматуємо до 2 знаків
+            const total = (pr * diffDays).toFixed(2)
             totalPriceInput.value = total
             totalPriceSpan.innerText = total
           } else {
@@ -40,12 +37,9 @@
           }
         }
       }
-    
-      // Слухаємо зміни
       startDateInput.addEventListener('change', calculatePrice)
       endDateInput.addEventListener('change', calculatePrice)
     
-      // !! ВАЖЛИВО: Запускаємо розрахунок одразу, якщо дати вже заповнені (після помилки)
       if (startDateInput.value && endDateInput.value) {
         calculatePrice()
       }

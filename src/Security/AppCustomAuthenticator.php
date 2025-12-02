@@ -30,8 +30,7 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->get('email'); // якщо ти використовуєш форму POST, getPayload()->getString() не потрібен
-
+        $email = $request->get('email');
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
 
@@ -48,17 +47,15 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        // Якщо користувач намагався відкрити захищену сторінку перед логіном
+        // Check if the user intended to go to a specific page before login
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        // 2. Використовуємо логер правильно
-        // Можна також додати email користувача для зручності
         $userIdentifier = $token->getUserIdentifier();
         $this->logger->info("custom log. User '{$userIdentifier}' logged in successfully.");
 
-        // Інакше редірект на головну або будь-яку іншу сторінку
+        // Default redirect to homepage
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
