@@ -18,7 +18,7 @@ use App\Repository\ReviewRepository;
 
 #[AsCommand(
     name: 'add100Reviews',
-    description: 'Mocks 100 reviews',
+    description: 'Mocking 100 reviews',
 )]
 class Add100ReviewsCommand extends Command
 {

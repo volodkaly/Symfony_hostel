@@ -52,17 +52,17 @@ https://getcomposer.org/download/ <br>
 
 I created a few console commands to mock the database quickly. Run them in this specific order to maintain relations:
 
-1.  `php bin/console addRooms` — creates rooms with random names, capacities and prices.
-2.  `php bin/console addUser` — creates 100 regular users with random names and emails.
-3.  `php bin/console addBooking` — makes 100 random bookings with random dates for random rooms present in the DB.
-4.  `php bin/console addReviews` — adds 100 reviews with random rating marks 1-5 to those bookings.
+php bin/console add100Bookings Mocking 100 bookings
+php bin/console add100Reviews Mocks 100 reviews
+php bin/console add100Users Mocking 100 users (not admins)
+php bin/console addRoom Mocking 1 room
+php bin/console addAdmin Mocking 1 admin
 
----
+## Without admin u cannot access ~/admin routes for having a control over all enities: room, bookings, reviews, users (customers).
 
 ### 📝 Notes
 
 - **Price Calculation:** There is a JS script in the booking form that automatically updates the total price when you change dates.
 - **Admin Panel:** You can access it at `/admin`. It handles all the CRUD operations and allows you to toggle payment statuses.
 - **Logs:** Custom logs are written when a new booking is created.
-
-.
+- **Flash messages:** Informative msgs ensure attractive UI experience.
