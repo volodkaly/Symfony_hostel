@@ -35,7 +35,9 @@ class UserCrudController extends AbstractCrudController
             // 2. Налаштовуємо поле пароля
             TextField::new('password')
                 ->setFormType(PasswordType::class)
-                ->setRequired($pageName === Crud::PAGE_NEW) // Обов'язкове тільки при створенні
+                ->setRequired($pageName === Crud::PAGE_NEW), // Обов'язкове тільки при створенні
+            TextField::new('phone'),
+            TextField::new('address'),
         ];
     }
 
