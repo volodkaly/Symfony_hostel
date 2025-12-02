@@ -61,7 +61,7 @@ php bin/console addAdmin
 
 ```
 
-## Without admin u cannot access ~/admin routes for having a control over all enities: room, bookings, reviews, users (customers).
+#### Without admin u cannot access ~/admin routes for having a control over all enities: room, bookings, reviews, users (customers).
 
 ### 📝 Notes
 
