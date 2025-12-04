@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div style="padding: 50px; font-family: sans-serif;">
+    <h1>Чат Підтримки</h1>
+
+    <div id="status" style="border: 1px solid #ddd; height: 300px; overflow-y: scroll; padding: 10px; margin-bottom: 10px;">
+      <div style="color: gray; font-style: italic;">Чат готовий до роботи...</div>
+    </div>
+
+    <button id="btn-test" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Відправити "Привіт!"</button>
+  </div>
+
+  <script>
+    const urlString = "{{ mercure_public_url|default('http://127.0.0.1:3000/.well-known/mercure') }}"
+    
+    console.log('Підключаємось до Mercure за адресою:', urlString)
+    
+    const hubUrl = new URL(urlString)
+    hubUrl.searchParams.append('topic', 'http://mysite.com/chat')
+    
+    const eventSource = new EventSource(hubUrl)
+    
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data)
+      const chatBox = document.getElementById('status')
+    
+      const msg = document.createElement('div')
+      msg.style.padding = '5px 0'
+      msg.innerHTML = `<strong>User ${data.sender}:</strong> ${data.content}`
+    
+      chatBox.appendChild(msg)
+    }
+    
+    // Відправка
+    document.getElementById('btn-test').addEventListener('click', function () {
+      fetch('/api/message/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: 'Тест ' + Math.floor(Math.random() * 100) })
+      })
+    })
+  </script>
+{% endblock %}

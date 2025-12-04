@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 1. Налаштування Mercure
+      // Symfony зазвичай запускає хаб на цьому порту локально.
+      // Якщо буде помилка з'єднання - перевіримо порти.
+      const hubUrl = new URL('http://127.0.0.1:8000/.well-known/mercure')
+      
+      // Додаємо топік (той самий, що і в PHP!)
+      hubUrl.searchParams.append('topic', 'http://mysite.com/chat')
+      
+      // 2. Слухаємо події
+      const eventSource = new EventSource(hubUrl)
+      
+      eventSource.onmessage = (event) => {
+        // Цей код спрацює, коли прийде повідомлення від PHP
+        const data = JSON.parse(event.data)
+        console.log('Отримано через Mercure:', data)
+      
+        // Малюємо повідомлення на сторінці
+        const chatBox = document.getElementById('status')
+        const msgDiv = document.createElement('div')
+        msgDiv.style.borderBottom = '1px solid #ccc'
+        msgDiv.style.padding = '5px'
+        msgDiv.innerHTML = `<strong>User #${data.sender}:</strong> ${data.content}`
+      
+        chatBox.appendChild(msgDiv)
+      }
+      
+      // 3. Відправка повідомлення (те, що ти вже робив)
+      document.getElementById('btn-test').addEventListener('click', function () {
+        fetch('/api/message/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: 'Тест Mercure ' + Math.random() })
+        })
+      })
+    </script>
+  </body>
+</html>
