@@ -1,7 +1,34 @@
 services:
   ###> doctrine/doctrine-bundle ###
+  php8.3-fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: 8.3
+    environment:
+      DATABASE_URL: mysql://${MYSQL_USER:-app}:${MYSQL_PASSWORD:-!ChangeMe!}@database:3306/${MYSQL_DATABASE:-app}?serverVersion=8.0&charset=utf8mb4
+      MERCURE_URL: http://mercure/.well-known/mercure
+      MERCURE_PUBLIC_URL: http://localhost:3000/.well-known/mercure
+      MERCURE_JWT_SECRET: "!ChangeThisMercureHubJWTSecretKey!"
+    volumes:
+      - ./:/var/www/html:rw,cached
+    depends_on:
+      - database
+      - mercure
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html:rw,cached
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/:rw
+    depends_on:
+      - php8.3-fpm
+
   database:
-    image: mariadb:11
+    image: mysql:8.0
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
       MYSQL_USER: ${MYSQL_USER:-app}
@@ -12,29 +39,28 @@ services:
       - "3307:3306"
     volumes:
       - database_data:/var/lib/mysql:rw
-
-  ###> symfony/mercure-bundle ###
   mercure:
     image: dunglas/mercure
     restart: unless-stopped
     environment:
-      # --- ВАЖЛИВІ ЗМІНИ ТУТ ---
-      # 1. Примусово включаємо HTTP (порт 80), щоб не було проблем з SSL
       SERVER_NAME: ":80"
-      # 2. Ключі (залиш як є)
       MERCURE_PUBLISHER_JWT_KEY: "!ChangeThisMercureHubJWTSecretKey!"
       MERCURE_SUBSCRIBER_JWT_KEY: "!ChangeThisMercureHubJWTSecretKey!"
-      # 3. Дозволяємо підключення звідусіль (зірочка *), щоб не було помилок CORS
       MERCURE_EXTRA_DIRECTIVES: |
         cors_origins *
         anonymous
-      # -------------------------
     command: /usr/bin/caddy run --config /etc/caddy/dev.Caddyfile
     ports:
-      - "3000:80" # Порт 3000 на комп'ютері веде на порт 80 в контейнері
+      - "3000:80"
     volumes:
       - mercure_data:/data
       - mercure_config:/config
+  mailer:
+    image: axllent/mailpit
+    ports:
+      - "1025"
+      - "8025:8025"
+
 volumes:
   database_data:
   mercure_data:
