@@ -1,14 +1,13 @@
 <?php
 namespace App\Event;
 
-use App\Entity\Messages; // Імпортуємо твою сутність
+use App\Entity\Messages;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class ChatMessageCreatedEvent extends Event
 {
     public const NAME = 'chat.message_sent';
 
-    // Кладемо в коробку ВЕСЬ об'єкт повідомлення
     public function __construct(private Messages $message)
     {
     }

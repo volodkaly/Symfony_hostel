@@ -25,16 +25,12 @@ class ChatNotificationSubscriber implements EventSubscriberInterface
     {
         $messageEntity = $event->getMessage();
 
-        // 1. Формуємо дані для відправки (JSON)
         $payload = json_encode([
             'id' => $messageEntity->getId(),
             'content' => $messageEntity->getContent(),
-            // Тут ми беремо ID юзера. Якщо в Entity User є метод getEmail(), можна його
-            'sender' => $messageEntity->getRelation() ? $messageEntity->getRelation()->getId() : 'Anonim',
+            'sender' => $messageEntity->getRelation()->getName(),
         ]);
 
-        // 2. Створюємо оновлення.
-        // ВАЖЛИВО: Ця адреса (Topic) має співпадати з тією, що в JavaScript
         $topic = 'http://mysite.com/chat';
 
         $update = new Update(
@@ -42,7 +38,6 @@ class ChatNotificationSubscriber implements EventSubscriberInterface
             $payload
         );
 
-        // 3. Відправляємо в хаб!
         $this->hub->publish($update);
     }
 }
