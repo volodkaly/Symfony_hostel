@@ -1,10 +1,8 @@
 {% block body %}
   <div style="padding: 50px; font-family: sans-serif;">
-    <div id="status" style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
-      <div style="color: gray; font-style: italic;">Chat is ready. Describe your problem.</div>
-    </div>
+    <div id="status"></div>
 
-    <input type="text" name="chat-text" id="chat-text" />
+    <input type="text" name="chat-text" id="chat-text" placeholder="Chat is ready. Describe your problem." />
     <button class="btn book-btn" id="btn-test" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Send</button>
   </div>
 
@@ -24,6 +22,7 @@
     
       const msg = document.createElement('div')
       msg.style.padding = '5px 0'
+      msg.style.textWrap = 'wrap'
       msg.innerHTML = `<strong>User ${data.sender}:</strong> ${data.content}`
     
       chatBox.appendChild(msg)
