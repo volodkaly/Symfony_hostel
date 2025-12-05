@@ -1,10 +1,8 @@
 {% block body %}
-  <div style="padding: 50px; font-family: sans-serif;">
-    <div id="status"></div>
+  <div id="status"></div>
 
-    <input type="text" name="chat-text" id="chat-text" placeholder="Chat is ready. Describe your problem." />
-    <button class="btn book-btn" id="btn-test" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Send</button>
-  </div>
+  <input type="text" name="chat-text" id="chat-text" placeholder="Chat is ready. Describe your problem." style="width:100%; cursor: pointer;" />
+  <button class="btn book-btn" id="btn-test" style="cursor: pointer;">Send</button>
 
   <script>
     const urlString = "{{ mercure_public_url|default('http://localhost:3000/.well-known/mercure') }}"

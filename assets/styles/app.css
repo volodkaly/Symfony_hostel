@@ -130,6 +130,8 @@ body {
 }
 
 .chat {
-  width: 400px;
+  width: 800px;
   max-height: 200px;
+  margin: 0;
+  padding: 0px;
 }
