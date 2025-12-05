@@ -2,6 +2,7 @@
   <div id="status"></div>
 
   <input type="text" name="chat-text" id="chat-text" placeholder="Chat is ready. Describe your problem." style="width:100%; cursor: pointer;" />
+  <input type="text" name="recipient" id="recipient" placeholder="Enter recipient id" style="cursor: pointer;" />
   <button class="btn book-btn" id="btn-test" style="cursor: pointer;">Send</button>
 
   <script>
@@ -29,7 +30,7 @@
       fetch('/api/message/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: document.getElementById('chat-text').value })
+        body: JSON.stringify({ recipientId: document.getElementById('recipient').value, content: document.getElementById('chat-text').value })
       })
     })
   </script>

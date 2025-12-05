@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Messages;
+use App\Entity\User;
 use App\Event\ChatMessageCreatedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,31 +20,46 @@ class ApiChatController extends AbstractController
     public function sendMessage(
         Request $request,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
     ): JsonResponse {
+
+
+
         $data = json_decode($request->getContent(), true);
+        $recipientId = $data['recipientId'] ?? null;
+        $currentUser = $this->getUser();
+        $currentUserId = $currentUser instanceof User ? $currentUser->getId() : null;
 
-        if (!$data || !isset($data['content'])) {
-            return $this->json(['error' => 'No content provided'], 400);
+        if ($recipientId == $currentUserId) {
+            if (!$data || !isset($data['content'])) {
+                return $this->json(['error' => 'No content provided'], 400);
+            }
+
+            $message = new Messages();
+
+            $message->setContent($data['content']);
+
+            $message->setTitle('Chat Message');
+
+            $message->setRelation($this->getUser());
+
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            $event = new ChatMessageCreatedEvent($message);
+
+            $dispatcher->dispatch($event, eventName: ChatMessageCreatedEvent::NAME);
+
+            return $this->json([
+                'status' => 'success',
+                'id' => $message->getId(),
+                'recipientId' => $recipientId,
+            ]);
+        } else {
+            return $this->json([
+                'status' => 'success',
+                'result' => 'Message sent',
+            ]);
         }
-
-        $message = new Messages();
-        $message->setContent($data['content']);
-
-        $message->setTitle('Chat Message');
-
-        $message->setRelation($this->getUser());
-
-        $entityManager->persist($message);
-        $entityManager->flush();
-
-        $event = new ChatMessageCreatedEvent($message);
-
-        $dispatcher->dispatch($event, ChatMessageCreatedEvent::NAME);
-
-        return $this->json([
-            'status' => 'success',
-            'id' => $message->getId()
-        ]);
     }
 }
