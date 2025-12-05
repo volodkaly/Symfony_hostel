@@ -1,15 +1,11 @@
-{% extends 'base.html.twig' %}
-
 {% block body %}
   <div style="padding: 50px; font-family: sans-serif;">
-    <h1>Chat</h1>
-
-    <div id="status" style="border: 1px solid #ddd; height: 300px; overflow-y: scroll; padding: 10px; margin-bottom: 10px;">
-      <div style="color: gray; font-style: italic;">Chat is ready...</div>
+    <div id="status" style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
+      <div style="color: gray; font-style: italic;">Chat is ready. Describe your problem.</div>
     </div>
 
     <input type="text" name="chat-text" id="chat-text" />
-    <button id="btn-test" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Send</button>
+    <button class="btn book-btn" id="btn-test" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Send</button>
   </div>
 
   <script>

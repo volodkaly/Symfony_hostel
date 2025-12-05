@@ -1,5 +1,6 @@
 .book-btn {
-  transition: transform 0.15s cubic-bezier(0.4, 2, 0.6, 1), background 0.2s;
+  background: linear-gradient(90deg, #6c3eb6 0%, #b993e6 100%);
+  border: none;
 }
 .book-btn:hover {
   transform: scale(1.08);
@@ -126,4 +127,9 @@ body {
 }
 .room-card button:hover {
   background: linear-gradient(90deg, #b993e6 0%, #6c3eb6 100%);
+}
+
+.chat {
+  width: 400px;
+  max-height: 200px;
 }
