@@ -1,17 +1,15 @@
 {% block body %}
-  <div class="container mt-4">
+  <div class="container mt-4" data-turbo="false">
     <div class="row">
       <div class="col-md-8 offset-md-2">
-        <h3>Support Chat</h3>
-
         <!-- Вікно чату -->
-        <div id="chat-box" style="text-wrap: wrap; background: #f9f9f9; width: 600px;">
-          <div id="status" class="text-muted small">Connecting...</div>
+        <div id="chat-box" style="text-wrap: wrap; background: #f9f9f9; width: 100%;">
+          <div id="status" class="text-muted small">Describe your problem</div>
         </div>
 
         <!-- Форма вводу -->
-        <div class="input-group mb-3">
-          <input type="text" id="chat-text" class="form-control" placeholder="Type your message..." />
+        <div class="input-group mb-3" style="width: 100%;">
+          <input type="text" id="chat-text" class="form-control" placeholder="Type your message here..." />
 
           {% if 'ROLE_ADMIN' in app.user.roles %}
             <!-- Адмін повинен вказати ID юзера, якому відповідає -->
