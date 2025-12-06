@@ -59,9 +59,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $address = null;
 
     /**
-     * @var Collection<int, Messages>
+     * @var Collection<int, Message>
      */
-    #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'relation', orphanRemoval: true)]
+    // ТУТ ЗМІНИЛИ: mappedBy: 'sender' (замість relation)
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'sender', orphanRemoval: true)]
     private Collection $message;
 
     public function __construct()
@@ -207,29 +208,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Messages>
+     * @return Collection<int, Message>
      */
     public function getMessage(): Collection
     {
         return $this->message;
     }
 
-    public function addMessage(Messages $message): static
+    public function addMessage(Message $message): static
     {
         if (!$this->message->contains($message)) {
             $this->message->add($message);
-            $message->setRelation($this);
+            // ТУТ ЗМІНИЛИ: setSender
+            $message->setSender($this);
         }
 
         return $this;
     }
 
-    public function removeMessage(Messages $message): static
+    public function removeMessage(Message $message): static
     {
         if ($this->message->removeElement($message)) {
             // set the owning side to null (unless already changed)
-            if ($message->getRelation() === $this) {
-                $message->setRelation(null);
+            // ТУТ ЗМІНИЛИ: getSender і setSender
+            if ($message->getSender() === $this) {
+                $message->setSender(null);
             }
         }
 

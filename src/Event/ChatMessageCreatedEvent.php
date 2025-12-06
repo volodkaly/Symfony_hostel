@@ -1,19 +1,19 @@
 <?php
 namespace App\Event;
 
-use App\Entity\Messages;
+use App\Entity\Message;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class ChatMessageCreatedEvent extends Event
 {
     public const NAME = 'chat.message_sent';
 
-    public function __construct(private Messages $message)
+    public function __construct(private Message $message)
     {
     }
 
     // Дозволяємо дістати об'єкт
-    public function getMessage(): Messages
+    public function getMessage(): Message
     {
         return $this->message;
     }

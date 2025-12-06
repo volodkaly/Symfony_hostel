@@ -46,8 +46,12 @@
     {% endblock %}
   </body>
 
-  <button onclick="document.querySelector('.chat').classList.toggle('hidden')" class="btn book-btn">Hide / show support chat</button>
-  <div class="chat">{{ include('chat/index.html.twig') }}</div>
+  {% if app.user %}
+    <button onclick="document.querySelector('.chat').classList.toggle('hidden')" class="btn book-btn">Hide / show support chat</button>
+    <div class="chat">{{ include('chat/index.html.twig') }}</div>
+  {% else %}
+    {{ 'please login' }}
+  {% endif %}
   <style>
     .hidden {
       display: none;

@@ -28,7 +28,7 @@ class ChatNotificationSubscriber implements EventSubscriberInterface
         $payload = json_encode([
             'id' => $messageEntity->getId(),
             'content' => $messageEntity->getContent(),
-            'sender' => $messageEntity->getRelation()->getName(),
+            'sender' => $messageEntity->getSender()->getName(),
         ]);
 
         $topic = 'http://mysite.com/chat';

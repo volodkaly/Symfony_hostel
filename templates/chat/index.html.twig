@@ -1,37 +1,97 @@
 {% block body %}
-  <div id="status"></div>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <h3>Support Chat</h3>
 
-  <input type="text" name="chat-text" id="chat-text" placeholder="Chat is ready. Describe your problem." style="width:100%; cursor: pointer;" />
-  <input type="text" name="recipient" id="recipient" placeholder="Enter recipient id" style="cursor: pointer;" />
-  <button class="btn book-btn" id="btn-test" style="cursor: pointer;">Send</button>
+        <!-- Вікно чату -->
+        <div id="chat-box" style="text-wrap: wrap; background: #f9f9f9; width: 600px;">
+          <div id="status" class="text-muted small">Connecting...</div>
+        </div>
+
+        <!-- Форма вводу -->
+        <div class="input-group mb-3">
+          <input type="text" id="chat-text" class="form-control" placeholder="Type your message..." />
+
+          {% if 'ROLE_ADMIN' in app.user.roles %}
+            <!-- Адмін повинен вказати ID юзера, якому відповідає -->
+            <input type="number" id="recipient-id" class="form-control" placeholder="User ID" style="max-width: 100px;" />
+          {% else %}
+            <!-- Звичайний юзер просто пише, отримувач за замовчуванням -->
+            <input type="hidden" id="recipient-id" value="" />
+          {% endif %}
+
+          <button class="btn btn-primary" id="btn-send">Send</button>
+        </div>
+
+        <div class="small text-muted">Your ID: {{ app.user.id }}</div>
+      </div>
+    </div>
+  </div>
 
   <script>
+    // 1. Налаштування Mercure
     const urlString = "{{ mercure_public_url|default('http://localhost:3000/.well-known/mercure') }}"
-    
-    console.log('Connecting mercure on adress:', urlString)
+    const topic = 'http://mysite.com/chat' // В ідеалі топіки мають бути унікальні для розмови
     
     const hubUrl = new URL(urlString)
-    hubUrl.searchParams.append('topic', 'http://mysite.com/chat')
+    hubUrl.searchParams.append('topic', topic)
     
     const eventSource = new EventSource(hubUrl)
     
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data)
-      const chatBox = document.getElementById('status')
+      const chatBox = document.getElementById('chat-box')
     
-      const msg = document.createElement('div')
-      msg.style.padding = '5px 0'
-      msg.style.textWrap = 'wrap'
-      msg.innerHTML = `<strong>User ${data.sender}:</strong> ${data.content}`
+      const msgDiv = document.createElement('div')
+      msgDiv.style.marginBottom = '5px'
+      msgDiv.innerHTML = `<strong>User ${data.sender}:</strong> ${data.content}`
     
-      chatBox.appendChild(msg)
+      chatBox.appendChild(msgDiv)
+      chatBox.scrollTop = chatBox.scrollHeight // Автопрокрутка вниз
     }
-    document.getElementById('btn-test').addEventListener('click', function () {
+    
+    eventSource.onopen = () => {
+      document.getElementById('status').innerText = 'Connected to chat.'
+    }
+    
+    // 2. Відправка повідомлення
+    document.getElementById('btn-send').addEventListener('click', sendMessage)
+    document.getElementById('chat-text').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') sendMessage()
+    })
+    
+    function sendMessage() {
+      const contentInput = document.getElementById('chat-text')
+      const recipientInput = document.getElementById('recipient-id')
+    
+      const content = contentInput.value
+      const recipientId = recipientInput.value
+    
+      if (!content.trim()) return
+    
       fetch('/api/message/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ recipientId: document.getElementById('recipient').value, content: document.getElementById('chat-text').value })
+        body: JSON.stringify({
+          content: content,
+          recipientId: recipientId // Тепер ми передаємо це поле!
+        })
       })
-    })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok')
+          }
+          return response.json()
+        })
+        .then((data) => {
+          console.log('Message saved:', data)
+          contentInput.value = '' // Очистити поле
+        })
+        .catch((error) => {
+          console.error('Error:', error)
+          alert('Error sending message')
+        })
+    }
   </script>
 {% endblock %}
