@@ -31,34 +31,26 @@ class ChatNotificationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // --- 1. DETERMINE SENDER NAME ---
-        // We trust the DB name because your screenshot shows they exist.
         $senderName = $sender?->getName();
 
-        // Fallback: If DB name is missing, use "Admin" or Email
         if (empty($senderName) && $sender) {
             $roles = $sender->getRoles();
             $senderName = in_array('ROLE_ADMIN', $roles) ? 'Admin' : $sender->getUserIdentifier();
         }
 
-        // --- 2. BUILD JSON PAYLOAD ---
         $payloadArr = [
             'id' => $messageEntity->getId(),
             'content' => $messageEntity->getContent(),
             'senderId' => $sender?->getId(),
             'senderName' => $senderName,
-            'sender' => $senderName, // Keep this for compatibility with JS
+            'sender' => $senderName,
             'recipientId' => $recipient->getId(),
         ];
 
         $payload = json_encode($payloadArr);
 
-        // --- 3. SEND TO MERCURE ---
-
-        // A. Check if Recipient is an Admin
         $recipientRoles = $recipient->getRoles();
         if (in_array('ROLE_ADMIN', $recipientRoles, true)) {
-            // Notify all admins
             $admins = $this->userRepository->createQueryBuilder('u')
                 ->where("u.roles LIKE :role")
                 ->setParameter('role', '%ROLE_ADMIN%')

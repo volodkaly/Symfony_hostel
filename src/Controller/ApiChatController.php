@@ -43,19 +43,16 @@ class ApiChatController extends AbstractController
         $message->setContent($content);
         $message->setSender($currentUser);
 
-        // --- RECIPIENT LOGIC ---
         if ($recipientId) {
-            // Admin sending to specific User (or User sending to specific User)
             $recipient = $userRepository->find($recipientId);
             if (!$recipient) {
                 return $this->json(['error' => 'Recipient not found'], 404);
             }
             $message->setRecipient($recipient);
         } elseif (in_array('ROLE_ADMIN', $currentUser->getRoles())) {
-            // Admin trying to send without ID
             return $this->json(['error' => 'Admin must provide recipientId'], 400);
         } else {
-            // Regular User sending to Admin (Auto-select)
+
             $admins = $userRepository->createQueryBuilder('u')
                 ->where("u.roles LIKE :role")
                 ->setParameter('role', '%ROLE_ADMIN%')
@@ -72,24 +69,15 @@ class ApiChatController extends AbstractController
         $entityManager->persist($message);
         $entityManager->flush();
 
-        // Dispatch Event for Mercure
         $event = new ChatMessageCreatedEvent($message);
         $dispatcher->dispatch($event, ChatMessageCreatedEvent::NAME);
 
-        // --- SENDER NAME LOGIC ---
-        // Use the name from DB. If empty, use "Admin" (if admin) or Email.
         $senderName = $currentUser->getName();
-
-        if (empty($senderName)) {
-            $senderName = in_array('ROLE_ADMIN', $currentUser->getRoles())
-                ? 'Admin'
-                : $currentUser->getUserIdentifier();
-        }
 
         return $this->json([
             'status' => 'success',
             'id' => $message->getId(),
-            'sender' => $senderName, // Should be "admin" (from DB)
+            'sender' => $senderName,
             'recipientId' => $message->getRecipient()?->getId()
         ]);
     }

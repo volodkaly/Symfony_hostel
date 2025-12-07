@@ -25,13 +25,11 @@
 
   <script>
     ;(function () {
-      // Read server-provided values from DOM data attributes to avoid Twig tokens in JS
       const root = document.getElementById('chat-root')
       const urlString = root.dataset.mercure
       const currentUserId = root.dataset.currentUser ? Number(root.dataset.currentUser) : null
       const topic = currentUserId ? `http://mysite.com/chat/${currentUserId}` : 'http://mysite.com/chat/global'
     
-      // Prevent multiple EventSource initializations (e.g., when the chat UI is toggled)
       const alreadyInit = !!window.chatInit
       if (!alreadyInit) {
         window.chatInit = true
@@ -40,7 +38,6 @@
         hubUrl.searchParams.append('topic', topic)
     
         const eventSource = new EventSource(hubUrl)
-        // Keep displayedMessages global so multiple script runs won't duplicate output
         window.chatDisplayedMessages = window.chatDisplayedMessages || new Set()
         const displayedMessages = window.chatDisplayedMessages
     
@@ -65,12 +62,9 @@
           document.getElementById('status').innerText = 'Connected to chat.'
         }
       } else {
-        // Ensure displayedMessages exists when re-entering the script
         window.chatDisplayedMessages = window.chatDisplayedMessages || new Set()
       }
       const displayedMessages = window.chatDisplayedMessages
-    
-      // (Event handlers are attached above only on first init)
     
       document.getElementById('btn-send').addEventListener('click', sendMessage)
       document.getElementById('chat-text').addEventListener('keypress', function (e) {
