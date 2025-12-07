@@ -1,5 +1,5 @@
 {% block body %}
-  <div class="container mt-4" data-turbo="false">
+  <div id="chat-root" class="container mt-4" data-mercure="{{ mercure_public_url|default('http://localhost:3000/.well-known/mercure') }}" data-current-user="{{ app.user ? app.user.id : '' }}">
     <div class="row">
       <div class="col-md-8 offset-md-2">
         <div id="chat-box" style="text-wrap: wrap; background: #f9f9f9; width: 100%;">
@@ -23,37 +23,54 @@
     </div>
   </div>
 
-  <script data-turbo="false">
+  <script>
     ;(function () {
-      const urlString = "{{ mercure_public_url|default('http://localhost:3000/.well-known/mercure') }}"
-      const currentUserId = {{ app.user.id }}
-      const topic = 'http://mysite.com/chat/{{ app.user.id }}'
+      // Read server-provided values from DOM data attributes to avoid Twig tokens in JS
+      const root = document.getElementById('chat-root')
+      const urlString = root.dataset.mercure
+      const currentUserId = root.dataset.currentUser ? Number(root.dataset.currentUser) : null
+      const topic = currentUserId ? `http://mysite.com/chat/${currentUserId}` : 'http://mysite.com/chat/global'
     
-      const hubUrl = new URL(urlString)
-      hubUrl.searchParams.append('topic', topic)
+      // Prevent multiple EventSource initializations (e.g., when the chat UI is toggled)
+      const alreadyInit = !!window.chatInit
+      if (!alreadyInit) {
+        window.chatInit = true
     
-      const eventSource = new EventSource(hubUrl)
+        const hubUrl = new URL(urlString)
+        hubUrl.searchParams.append('topic', topic)
     
-      eventSource.onmessage = (event) => {
-        const data = JSON.parse(event.data)
-        const chatBox = document.getElementById('chat-box')
+        const eventSource = new EventSource(hubUrl)
+        // Keep displayedMessages global so multiple script runs won't duplicate output
+        window.chatDisplayedMessages = window.chatDisplayedMessages || new Set()
+        const displayedMessages = window.chatDisplayedMessages
     
-        if (displayedMessages.has(data.id)) {
-          return
+        eventSource.onmessage = (event) => {
+          const data = JSON.parse(event.data)
+          const chatBox = document.getElementById('chat-box')
+    
+          if (displayedMessages.has(data.id)) {
+            return
+          }
+          displayedMessages.add(data.id)
+    
+          const msgDiv = document.createElement('div')
+          msgDiv.style.marginBottom = '5px'
+          msgDiv.innerHTML = `<strong>User ${data.senderName || data.sender}:</strong> ${data.content}`
+    
+          chatBox.appendChild(msgDiv)
+          chatBox.scrollTop = chatBox.scrollHeight
         }
-        displayedMessages.add(data.id)
     
-        const msgDiv = document.createElement('div')
-        msgDiv.style.marginBottom = '5px'
-        msgDiv.innerHTML = `<strong>User ${data.senderName || data.sender}:</strong> ${data.content}`
-    
-        chatBox.appendChild(msgDiv)
-        chatBox.scrollTop = chatBox.scrollHeight
+        eventSource.onopen = () => {
+          document.getElementById('status').innerText = 'Connected to chat.'
+        }
+      } else {
+        // Ensure displayedMessages exists when re-entering the script
+        window.chatDisplayedMessages = window.chatDisplayedMessages || new Set()
       }
+      const displayedMessages = window.chatDisplayedMessages
     
-      eventSource.onopen = () => {
-        document.getElementById('status').innerText = 'Connected to chat.'
-      }
+      // (Event handlers are attached above only on first init)
     
       document.getElementById('btn-send').addEventListener('click', sendMessage)
       document.getElementById('chat-text').addEventListener('keypress', function (e) {
