@@ -9,7 +9,6 @@ use Symfony\Component\Mercure\Update;
 
 class ChatNotificationSubscriber implements EventSubscriberInterface
 {
-    // Підключаємо Mercure Hub
     public function __construct(private HubInterface $hub)
     {
     }
@@ -25,19 +24,23 @@ class ChatNotificationSubscriber implements EventSubscriberInterface
     {
         $messageEntity = $event->getMessage();
 
-        $payload = json_encode([
+        $sender = $messageEntity->getSender();
+        $recipient = $messageEntity->getRecipient();
+
+        $payloadArr = [
             'id' => $messageEntity->getId(),
             'content' => $messageEntity->getContent(),
-            'sender' => $messageEntity->getSender()->getName(),
-        ]);
+            'senderId' => $sender?->getId(),
+            'senderName' => $sender?->getName(),
+            'recipientId' => $recipient?->getId(),
+        ];
 
-        $topic = 'http://mysite.com/chat';
+        $payload = json_encode($payloadArr);
 
-        $update = new Update(
-            $topic,
-            $payload
-        );
-
-        $this->hub->publish($update);
+        if ($recipient) {
+            $recipientTopic = 'http://mysite.com/chat/' . $recipient->getId();
+            $update = new Update($recipientTopic, $payload);
+            $this->hub->publish($update);
+        }
     }
 }

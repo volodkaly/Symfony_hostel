@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Message;
-use App\Entity\User;
 use App\Event\ChatMessageCreatedEvent;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,7 +26,6 @@ class ApiChatController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $content = $data['content'] ?? null;
 
-        // Отримуємо ID отримувача з форми (якщо пише адмін)
         $recipientId = $data['recipientId'] ?? null;
 
         if (!$content) {
@@ -40,33 +38,40 @@ class ApiChatController extends AbstractController
         $message->setContent($content);
         $message->setSender($currentUser);
 
-        // ЛОГІКА ОТРИМУВАЧА
         if ($recipientId) {
-            // Якщо ID передано явно (наприклад, адмін відповідає юзеру)
+
             $recipient = $userRepository->find($recipientId);
             if ($recipient) {
                 $message->setRecipient($recipient);
             }
         } elseif (in_array('ROLE_ADMIN', $currentUser->getRoles())) {
-            // Якщо адмін пише без отримувача - це помилка (або загальний чат)
-            // Тут можна додати логіку
+
         } else {
-            // Якщо пише звичайний юзер - отримувач не обов'язковий (це тікет на підтримку)
-            // Або можна знайти першого адміна і призначити йому
+
+            $admins = $userRepository->createQueryBuilder('u')
+                ->where("u.roles LIKE :role")
+                ->setParameter('role', '%ROLE_ADMIN%')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getResult();
+            $admin = $admins[0] ?? null;
+
+            if ($admin) {
+                $message->setRecipient($admin);
+            }
         }
 
-        // Зберігаємо в БД
         $entityManager->persist($message);
         $entityManager->flush();
 
-        // Відправляємо в Mercure (івент)
         $event = new ChatMessageCreatedEvent($message);
         $dispatcher->dispatch($event, ChatMessageCreatedEvent::NAME);
 
         return $this->json([
             'status' => 'success',
             'id' => $message->getId(),
-            'sender' => $currentUser->getUserIdentifier() // або ->getId()
+            'sender' => $currentUser->getUserIdentifier(),
+            'recipientId' => $message->getRecipient()?->getId()
         ]);
     }
 }
