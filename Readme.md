@@ -17,7 +17,7 @@ Switch to the default branch:<br>
 git checkout mercure<br>
 Build and run docker:<br>
 docker-compose --build<br>
-docker-compose up
+docker-compose up -d
 
 # Symfony Hostel
 
