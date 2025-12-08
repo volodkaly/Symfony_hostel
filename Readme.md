@@ -11,6 +11,14 @@ Start a local server:<br>
 php -S localhost:8000 -t public<br>
 Then open http://localhost:8000 in your browser to quickly show the app without Docker.
 
+#### 🎬 Full version
+
+Switch to the default branch:<br>
+git checkout mercure<br>
+Build and run docker:<br>
+docker-compose --build<br>
+docker-compose up
+
 # Symfony Hostel
 
 A simple booking system built with **Symfony 6.4** and **MySQL**.
