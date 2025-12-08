@@ -65,6 +65,7 @@ php bin/console add100Users
 php bin/console addRoom
 php bin/console add100Bookings
 php bin/console add100Reviews
+php bin/console add100Messages
 
 ```
 

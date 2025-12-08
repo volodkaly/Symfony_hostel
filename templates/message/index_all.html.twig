@@ -16,6 +16,9 @@
         <th>Id</th>
         <th>Content</th>
         <th>CreatedAt</th>
+        <th>Sender</th>
+        <th>Recipient</th>
+
         <th>actions</th>
       </tr>
     </thead>
@@ -25,6 +28,8 @@
           <td>{{ message.id }}</td>
           <td>{{ message.content }}</td>
           <td>{{ message.createdAt ? message.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+          <td>{{ message.sender.name ~ ' (id:' ~ message.sender.id ~ ') ' ~ ' (email:' ~ message.sender.email ~ ') ' }}</td>
+          <td>{{ message.recipient.name ~ ' (id:' ~ message.recipient.id ~ ') ' ~ ' (email:' ~ message.recipient.email ~ ') ' }}</td>
           <td>
             <a href="{{ path('app_message_show', { id: message.id }) }}">show</a>
             <a href="{{ path('app_message_edit', { id: message.id }) }}">edit</a>
