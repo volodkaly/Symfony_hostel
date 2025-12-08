@@ -1,3 +1,9 @@
+#This repository currently contains 2 branches
+
+## 1) Simplified local version
+
+## 2) Docker based version with mercury websocket chat
+
 # Symfony Hostel
 
 A simple booking system built with **Symfony 6.4** and **MySQL**.
@@ -59,6 +65,7 @@ php bin/console add100Users
 php bin/console addRoom
 php bin/console add100Bookings
 php bin/console add100Reviews
+php bin/console add100Messages
 
 ```
 
