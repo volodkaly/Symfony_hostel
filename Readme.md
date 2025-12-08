@@ -1,4 +1,16 @@
-#This repository currently contains 2 branches
+# 🎬 Quick demo (for interviews)
+
+## Switch to the simplified branch:
+
+### git checkout local
+
+## Start a local server:
+
+### php -S localhost:8000 -t public
+
+## Then open http://localhost:8000 in your browser to quickly show the app without Docker.
+
+# This repository currently contains 2 branches
 
 ## 1) Simplified local version on branch 'local'
 
