@@ -1,8 +1,8 @@
 #This repository currently contains 2 branches
 
-## 1) Simplified local version
+## 1) Simplified local version on branch 'local'
 
-## 2) Docker based version with mercury websocket chat
+## 2) Docker based version with mercury websocket chat on default branch 'mercure'
 
 # Symfony Hostel
 
