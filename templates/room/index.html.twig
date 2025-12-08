@@ -23,10 +23,6 @@
     {{ parent() }}
   {% endblock %}
 
-  <div class="right-menu-link">
-    <a href="{{ path('app_booking_index') }}" class="room-card button">My bookings</a>
-  </div>
-
   <div class="example-wrapper">
     {% if (rooms|length) == 0 %}
       <p>No room was found yet</p>

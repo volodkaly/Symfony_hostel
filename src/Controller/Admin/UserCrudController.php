@@ -15,8 +15,6 @@ use Doctrine\ORM\EntityManagerInterface;
 class UserCrudController extends AbstractCrudController
 {
     private UserPasswordHasherInterface $passwordHasher;
-
-    // 1. Впроваджуємо сервіс хешування через конструктор
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
@@ -34,10 +32,10 @@ class UserCrudController extends AbstractCrudController
             TextField::new('name'),
             EmailField::new('email'),
 
-            // 2. Налаштовуємо поле пароля
+            // 2. Use PasswordType for the password field
             TextField::new('password')
                 ->setFormType(PasswordType::class)
-                ->setRequired($pageName === Crud::PAGE_NEW), // Обов'язкове тільки при створенні
+                ->setRequired($pageName === Crud::PAGE_NEW), // Required only on creation
             TextField::new('phone'),
             TextField::new('address'),
         ];
@@ -49,32 +47,32 @@ class UserCrudController extends AbstractCrudController
         parent::persistEntity($entityManager, $entityInstance);
     }
 
-    // 4. Перехоплюємо оновлення користувача (UPDATE)
+    // 4. Hash password on update too
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $this->hashPassword($entityInstance);
         parent::updateEntity($entityManager, $entityInstance);
     }
 
-    // Допоміжний метод для хешування
+    // 5. Hashing function
     private function hashPassword($user): void
     {
         if (!$user instanceof User) {
             return;
         }
 
-        // Отримуємо "чистий" пароль, який ввели у форму
+        // Get the plain password
         $plainPassword = $user->getPassword();
 
-        // Якщо пароль не змінювали (поле пусте при редагуванні) - нічого не робимо
+        // If password is not set, do nothing
         if (empty($plainPassword)) {
             return;
         }
 
-        // Хешуємо пароль
+        // Hash the password
         $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
 
-        // Записуємо хеш назад у сутність
+        // Set the hashed password back to the user entity
         $user->setPassword($hashedPassword);
     }
 }

@@ -11,8 +11,6 @@ class ChatMessageCreatedEvent extends Event
     public function __construct(private Message $message)
     {
     }
-
-    // Дозволяємо дістати об'єкт
     public function getMessage(): Message
     {
         return $this->message;

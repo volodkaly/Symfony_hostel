@@ -16,18 +16,16 @@ class Message
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
-    // Відправник
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $sender = null;
 
-    // Отримувач
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $recipient = null;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private ?\DateTimeImmutable $createdAt = null;
+    public ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
     {

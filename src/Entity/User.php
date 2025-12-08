@@ -61,7 +61,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Message>
      */
-    // ТУТ ЗМІНИЛИ: mappedBy: 'sender' (замість relation)
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'sender', orphanRemoval: true)]
     private Collection $message;
 
@@ -219,7 +218,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->message->contains($message)) {
             $this->message->add($message);
-            // ТУТ ЗМІНИЛИ: setSender
             $message->setSender($this);
         }
 
@@ -230,7 +228,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->message->removeElement($message)) {
             // set the owning side to null (unless already changed)
-            // ТУТ ЗМІНИЛИ: getSender і setSender
             if ($message->getSender() === $this) {
                 $message->setSender(null);
             }

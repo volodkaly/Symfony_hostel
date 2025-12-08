@@ -135,3 +135,11 @@ body {
   margin: 0;
   padding: 0px;
 }
+
+.header-links {
+  display: flex;
+}
+
+.header-links a:active {
+  font-style: none;
+}

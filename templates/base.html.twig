@@ -24,6 +24,17 @@
     {% block body %}
       <header>
         {% block header %}
+          <div class="header-links">
+            <div>
+              <a href="{{ path('app_booking_index') }}" class="room-card button">My bookings</a>
+            </div>
+            <div>
+              <a href="{{ path('app_room') }}" class="room-card button">Rooms</a>
+            </div>
+            <div>
+              <a href="{{ path('app_message_index') }}" class="room-card button">My messages</a>
+            </div>
+          </div>
           <div class="login">
             {% if app.user %}
               <a href="{{ path('app_logout') }}" class="login-child"><img src="{{ asset('icons/logout.png') }}" height="50" alt="logout" /></a>
