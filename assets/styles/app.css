@@ -138,8 +138,20 @@ body {
 
 .header-links {
   display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 30px;
+  background-color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
-.header-links a:active {
-  font-style: none;
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  background-color: #e0e7ff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }

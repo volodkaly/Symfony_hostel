@@ -25,22 +25,21 @@
       <header>
         {% block header %}
           <div class="header-links">
-            <div>
-              <a href="{{ path('app_booking_index') }}" class="room-card button">My bookings</a>
+            <a href="{{ path('app_booking_index') }}">My bookings</a>
+
+            <a href="{{ path('app_room') }}">Rooms</a>
+
+            <a href="{{ path('app_message_index') }}">My messages</a>
+
+            <a href="{{ path('app_review_index_readonly') }}">My reviews</a>
+
+            <div class="login">
+              {% if app.user %}
+                <a href="{{ path('app_logout') }}" class="login-child" title="Logout"><img src="{{ asset('icons/logout.png') }}" height="50" alt="logout" /></a>
+              {% else %}
+                <a href="{{ path('app_login') }}" class="login-child" title="Login"><img src="{{ asset('icons/login.png') }}" height="50" alt="login" /></a>
+              {% endif %}
             </div>
-            <div>
-              <a href="{{ path('app_room') }}" class="room-card button">Rooms</a>
-            </div>
-            <div>
-              <a href="{{ path('app_message_index') }}" class="room-card button">My messages</a>
-            </div>
-          </div>
-          <div class="login">
-            {% if app.user %}
-              <a href="{{ path('app_logout') }}" class="login-child"><img src="{{ asset('icons/logout.png') }}" height="50" alt="logout" /></a>
-            {% else %}
-              <a href="{{ path('app_login') }}" class="login-child"><img src="{{ asset('icons/login.png') }}" height="50" alt="login" /></a>
-            {% endif %}
           </div>
 
           {% for message in app.flashes('success') %}

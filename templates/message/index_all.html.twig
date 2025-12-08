@@ -8,7 +8,7 @@
   {% block header %}
     {{ parent() }}
   {% endblock %}
-  <h1>Message index</h1>
+  <h1>All messages (seen by admin):</h1>
 
   <table class="table">
     <thead>
@@ -18,8 +18,7 @@
         <th>CreatedAt</th>
         <th>Sender</th>
         <th>Recipient</th>
-
-        <th>actions</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -28,8 +27,8 @@
           <td>{{ message.id }}</td>
           <td>{{ message.content }}</td>
           <td>{{ message.createdAt ? message.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-          <td>{{ message.sender.name ~ ' (id:' ~ message.sender.id ~ ') ' ~ ' (email:' ~ message.sender.email ~ ') ' }}</td>
-          <td>{{ message.recipient.name ~ ' (id:' ~ message.recipient.id ~ ') ' ~ ' (email:' ~ message.recipient.email ~ ') ' }}</td>
+          <td>{{ message.sender.name }}</td>
+          <td>{{ message.recipient.name }}</td>
           <td>
             <a href="{{ path('app_message_show', { id: message.id }) }}">show</a>
             <a href="{{ path('app_message_edit', { id: message.id }) }}">edit</a>
@@ -43,5 +42,5 @@
     </tbody>
   </table>
 
-  <a href="{{ path('app_message_new') }}">Create new</a>
+  <a href="{{ path('app_message_new') }} " class="btn btn-primary">Create new</a>
 {% endblock %}

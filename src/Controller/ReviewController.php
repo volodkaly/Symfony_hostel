@@ -40,6 +40,19 @@ final class ReviewController extends AbstractController
         ]);
     }
 
+    #[Route('/readonly', name: 'app_review_index_readonly', methods: ['GET'])]
+    public function indexReadonly(ReviewRepository $reviewRepository, EntityManagerInterface $em, BookingRepository $bookingRepository, Request $request): Response
+    {
+
+        $bookings = $bookingRepository->findBy(['customer' => $this->getUser()]);
+        $myReviews = $reviewRepository->findBy(['booking' => $bookings]);
+
+        return $this->render('review/index_readonly.html.twig', [
+            'reviews' => $myReviews,
+        ]);
+    }
+
+
     #[Route('/new', name: 'app_review_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, BookingRepository $bookingRepository, LoggerInterface $logger): Response
     {

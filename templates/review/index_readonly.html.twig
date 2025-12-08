@@ -12,6 +12,8 @@
   <div class="example-wrapper">
     <a href="{{ path('app_room') }}"><h4>All rooms</h4></a>
     <h4>My reviews</h4>
+    <h6>On this page your reviews are only available for reading.</h6>
+    <h6>To leave a new review choose one of your bookings.</h6>
 
     <table class="table">
       <thead>
@@ -20,6 +22,8 @@
           <th>Title</th>
           <th>Mark</th>
           <th>Description</th>
+          <th>Booking Id</th>
+          <th>Customer</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -30,6 +34,8 @@
             <td>{{ review.title }}</td>
             <td>{{ review.mark }}</td>
             <td>{{ review.description }}</td>
+            <td>{{ review.booking.id }}</td>
+            <td>{{ review.booking.customer.name }}</td>
             <td>
               <a href="{{ path('app_review_show', { id: review.id }) }}" class="btn btn-primary">show</a>
               <a href="{{ path('app_review_edit', { id: review.id }) }}" class="btn btn-primary">edit</a>
@@ -42,7 +48,5 @@
         {% endfor %}
       </tbody>
     </table>
-
-    <a href="{{ path('app_review_new', { bookingId: bookingId }) }}">Create new</a>
   </div>
 {% endblock %}
