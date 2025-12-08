@@ -46,7 +46,7 @@ class Add100ReviewsCommand extends Command
             $this->em->clear();
 
         }
-        $this->logger->info('custom log: reviews were mocked');
+        $this->logger->info('custom log: 100 reviews were mocked');
         return Command::SUCCESS;
     }
 }

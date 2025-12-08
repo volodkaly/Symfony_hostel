@@ -36,7 +36,7 @@ class AddAdminCommand extends Command
 
         echo 'User added: ' . PHP_EOL . $user->getName() . PHP_EOL . 'email: ' . $user->getEmail() . PHP_EOL;
 
-        $this->logger->info('custom log: admin was mocked');
+        $this->logger->info('custom log: 1 admin was mocked');
         return Command::SUCCESS;
     }
 }

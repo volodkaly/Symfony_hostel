@@ -68,8 +68,10 @@
     
       document.getElementById('btn-send').addEventListener('click', sendMessage)
       document.getElementById('chat-text').addEventListener('keypress', function (e) {
-        e.preventDefault()
-        if (e.key === 'Enter') sendMessage()
+        if (e.key === 'Enter') {
+          e.preventDefault()
+          sendMessage()
+        }
       })
     
       function sendMessage() {

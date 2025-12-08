@@ -37,7 +37,7 @@ class Add100UsersCommand extends Command
             echo 'User added: ' . PHP_EOL . $user->getName() . PHP_EOL . 'email: ' . $user->getEmail() . PHP_EOL;
         }
 
-        $this->logger->info('custom log: users were mocked');
+        $this->logger->info('custom log: 100 users were mocked');
         return Command::SUCCESS;
     }
 }

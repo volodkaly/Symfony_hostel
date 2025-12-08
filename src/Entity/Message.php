@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\MessagesRepository; // Тут можна залишити старий репозиторій, якщо не хочете перейменовувати і його
+use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MessagesRepository::class)]
+#[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
 {
     #[ORM\Id]

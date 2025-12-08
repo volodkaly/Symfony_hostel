@@ -20,9 +20,10 @@ class ReviewCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            IdField::new('id')->hideOnForm(),
             TextField::new('title'),
             IntegerField::new('mark'),
-            IntegerField::new('booking'),
+            AssociationField::new('booking'),
         ];
     }
 

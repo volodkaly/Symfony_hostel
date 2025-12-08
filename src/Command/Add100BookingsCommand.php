@@ -57,7 +57,7 @@ class Add100BookingsCommand extends Command
             $this->entityManager->flush();
             $this->entityManager->clear();
         }
-        $this->logger->info('custom log: bookings were mocked');
+        $this->logger->info('custom log: 100 bookings were mocked');
         return Command::SUCCESS;
     }
 
