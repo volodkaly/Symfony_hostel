@@ -36,7 +36,7 @@ docker-compose up --build -d
 
 ### Registration form
 
-![alt text](image-4.png)
+![alt text](image-8.png)
 
 ### Admin panel
 

@@ -10,11 +10,16 @@
   <h1>Registration</h1>
 
   {{ form_start(registrationForm, { attr: { 'data-turbo': 'false' } }) }}
-  {{ form_row(registrationForm.email) }}
-  {{ form_row(registrationForm.password) }}
-  {{ form_row(registrationForm.name) }}
-  {{ form_row(registrationForm.phone, { required: false }) }}
-  {{ form_row(registrationForm.address, { required: false }) }}
+  {{form_label(registrationForm.email) }}
+  {{ form_row(registrationForm.email,{label:false}) }}
+  {{form_label(registrationForm.password) }}
+  {{ form_row(registrationForm.password,{label:false}) }}
+  {{form_label(registrationForm.name) }}
+  {{ form_row(registrationForm.name,{label:false}) }}
+  {{form_label(registrationForm.phone) }}
+  {{ form_row(registrationForm.phone, { required: false, label:false}) }}
+  {{form_label(registrationForm.address) }}
+  {{ form_row(registrationForm.address, { required: false, label:false}) }}
   <button class="btn btn-primary">Register</button>
   {{ form_end(registrationForm) }}
 
