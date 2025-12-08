@@ -16,8 +16,7 @@ Then open http://localhost:8000 in your browser to quickly show the app without 
 Switch to the default branch:<br>
 git checkout mercure<br>
 Build and run docker:<br>
-docker-compose --build<br>
-docker-compose up -d
+docker-compose up --build -d
 
 # Symfony Hostel
 
