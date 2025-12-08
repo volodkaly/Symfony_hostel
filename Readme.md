@@ -1,8 +1,22 @@
-#This repository currently contains 2 branches
+# This repository currently contains 2 branches
 
-## 1) Simplified local version on branch 'local'
+1. Simplified local version on branch 'local'<br>
+2. Docker based version with mercury websocket chat on default branch 'mercure'<br>
 
-## 2) Docker based version with mercury websocket chat on branch 'mercure'
+#### 🎬 Quick demo
+
+Switch to the simplified branch:<br>
+git checkout local<br>
+Start a local server:<br>
+php -S localhost:8000 -t public<br>
+Then open http://localhost:8000 in your browser to quickly show the app without Docker.
+
+#### 🎬 Full version
+
+Switch to the default branch:<br>
+git checkout mercure<br>
+Build and run docker:<br>
+docker-compose up --build -d
 
 # Symfony Hostel
 
