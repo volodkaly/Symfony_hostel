@@ -20,9 +20,10 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Name*'
             ])
             ->add('phone', TextType::class, [
-
+                'attr' => ['required' => false],
             ])
             ->add('address', TextType::class, [
+                'attr' => ['required' => false],
             ])
         ;
     }

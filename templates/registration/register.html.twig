@@ -9,12 +9,12 @@
 {% block body %}
   <h1>Registration</h1>
 
-  {{ form_start(registrationForm) }}
+  {{ form_start(registrationForm, { attr: { 'data-turbo': 'false' } }) }}
   {{ form_row(registrationForm.email) }}
   {{ form_row(registrationForm.password) }}
   {{ form_row(registrationForm.name) }}
-  {{ form_row(registrationForm.phone) }}
-  {{ form_row(registrationForm.address) }}
+  {{ form_row(registrationForm.phone, { required: false }) }}
+  {{ form_row(registrationForm.address, { required: false }) }}
   <button class="btn btn-primary">Register</button>
   {{ form_end(registrationForm) }}
 
