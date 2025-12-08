@@ -18,6 +18,35 @@ git checkout mercure<br>
 Build and run docker:<br>
 docker-compose up --build -d
 
+### Main page appearance
+
+![alt text](image.png)
+
+### Real time websocket support chat
+
+![alt text](image-1.png)
+
+### Current user bookings
+
+![alt text](image-2.png)
+
+### Current user reviews
+
+![alt text](image-3.png)
+
+### Registration form
+
+![alt text](image-4.png)
+
+### Admin panel
+
+![alt text](image-5.png)
+
+### Validation checks
+
+![alt text](image-6.png)
+![alt text](image-7.png)
+
 # Symfony Hostel
 
 A simple booking system built with **Symfony 6.4** and **MySQL**.
@@ -91,3 +120,5 @@ php bin/console add100Messages
 - **Admin Panel:** You can access it at `/admin`. It handles all the CRUD operations and allows you to toggle payment statuses.
 - **Logs:** Custom logs are written when a new booking is created.
 - **Flash messages:** Informative msgs ensure attractive UI experience.
+- **Pagination:** Long lists divided into pages
+- **Validation checks:** User inputs are validated
