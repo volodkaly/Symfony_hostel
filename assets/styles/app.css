@@ -1,3 +1,7 @@
+* {
+  margin: 0;
+  padding: 0;
+}
 .book-btn {
   background: linear-gradient(90deg, #6c3eb6 0%, #b993e6 100%);
   border: none;
@@ -8,7 +12,9 @@
 }
 
 body {
-  margin: 0;
+  margin-top: 60px;
+  margin-left: 10px;
+  margin-right: 10px;
   font-family: "Inter", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -79,7 +85,6 @@ body {
   flex-wrap: wrap;
   gap: 24px;
   justify-content: center;
-  margin-top: 32px;
 }
 
 .room-card {
@@ -137,13 +142,15 @@ body {
 }
 
 .header-links {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   font-size: 30px;
   background-color: white;
-  padding-top: 5px;
-  padding-bottom: 5px;
 }
 
 a {
@@ -154,4 +161,8 @@ a {
 a:hover {
   background-color: #e0e7ff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-control {
+  width: 400px;
 }
