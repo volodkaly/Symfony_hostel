@@ -120,7 +120,7 @@ php bin/console add100Messages
 
 ### 📝 Notes
 
-- **Price Calculation:** There is a JS script in the booking form that automatically updates the total price when you change dates.
+- **Price Calculation:** Total price is automatically calculated and displayed when the start date and the end date are set.
 - **Admin Panel:** You can access it at `/admin`. It handles all the CRUD operations and allows you to toggle payment statuses.
 - **Logs:** Custom logs are written when a new booking is created.
 - **Flash messages:** Informative msgs ensure attractive UI experience.
