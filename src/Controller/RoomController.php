@@ -21,12 +21,15 @@ final class RoomController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $maxPrice = $request->query->getInt('maxPrice', 1001);
         $minRating = $request->query->getInt('minRating', 1);
+        $minCapacity = $request->query->getInt('minCapacity', 1);
 
         $results = $em->createQueryBuilder()
             ->select('r', 'AVG(rev.mark) as average_rating')
             ->from(Room::class, 'r')
             ->where('r.price <= :maxPrice')
             ->setParameter('maxPrice', $maxPrice)
+            ->andWhere('r.capacity >= :minCapacity')
+            ->setParameter('minCapacity', $minCapacity)
             ->having('average_rating >= :minRating OR average_rating IS NULL')
             ->setParameter('minRating', $minRating)
             ->leftJoin('r.bookings', 'b')
@@ -58,6 +61,7 @@ final class RoomController extends AbstractController
                 'page' => $page,
                 'maxPrice' => $maxPrice,
                 'minRating' => $minRating,
+                'minCapacity' => $minCapacity,
                 'numberOfResults' => $numberOfResults,
             ]
         );

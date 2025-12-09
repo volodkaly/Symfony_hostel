@@ -51,6 +51,10 @@
       <label for="minRating">Choose min average rating:</label>
       <input type="range" id="minRating" name="minRating" value="{{ minRating|default('1') }}" min="1" max="5" />
       {{ minRating }}
+      <br />
+      <label for="minCapacity">Choose min capacity:</label>
+      <input type="range" id="minCapacity" name="minCapacity" value="{{ minCapacity|default('1') }}" min="1" max="4" />
+      {{ minCapacity }}
     </form>
     <div>{{ numberOfResults }} room(s) found.</div>
     <script>
@@ -60,6 +64,11 @@
       })
       
       document.getElementById('minRating').addEventListener('change', function (e) {
+        e.preventDefault()
+        document.getElementById('filterForm').submit()
+      })
+      
+      document.getElementById('minCapacity').addEventListener('change', function (e) {
         e.preventDefault()
         document.getElementById('filterForm').submit()
       })
