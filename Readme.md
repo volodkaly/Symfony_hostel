@@ -20,7 +20,7 @@ docker-compose up --build -d
 
 ### Main page appearance
 
-![alt text](image.png)
+![alt text](image-10.png)
 
 ### Real time websocket support chat
 
@@ -46,6 +46,10 @@ docker-compose up --build -d
 
 ![alt text](image-6.png)
 ![alt text](image-7.png)
+
+### Rooms are dynamically filtered
+
+![alt text](image-9.png)
 
 # Symfony Hostel
 
