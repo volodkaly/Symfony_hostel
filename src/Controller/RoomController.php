@@ -19,7 +19,7 @@ final class RoomController extends AbstractController
     #[Route('/rooms', name: 'app_room')] public function index(EntityManagerInterface $em, Request $request, RoomRepository $roomRepository, BookingRepository $bookingRepository, ReviewRepository $reviewRepository): Response
     {
         $page = $request->query->getInt('page', 1);
-        $maxPrice = $request->query->getInt('maxPrice', 1001);
+        $maxPrice = $request->query->getInt('maxPrice', 1000);
         $minRating = $request->query->getInt('minRating', 1);
         $minCapacity = $request->query->getInt('minCapacity', 1);
 

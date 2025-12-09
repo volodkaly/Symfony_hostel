@@ -45,7 +45,7 @@
   <div class="room-filters">
     <form action="{{ path('app_room') }}" method="GET" id="filterForm">
       <label for="maxPrice">Choose max price per night:</label>
-      <input type="range" id="maxPriceInput" name="maxPrice" value="{{ maxPrice|default('1001') }}" min="0" max="1001" />
+      <input type="range" id="maxPriceInput" name="maxPrice" value="{{ maxPrice|default('1000') }}" min="0" max="1000" />
       {{ maxPrice }}
       <br />
       <label for="minRating">Choose min average rating:</label>
