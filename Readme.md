@@ -126,3 +126,4 @@ php bin/console add100Messages
 - **Flash messages:** Informative msgs ensure attractive UI experience.
 - **Pagination:** Long lists divided into pages
 - **Validation checks:** User inputs are validated
+- **Dymanic filters:** Rooms are filtered based on user input max price, min average rating and min capacity parameters.
