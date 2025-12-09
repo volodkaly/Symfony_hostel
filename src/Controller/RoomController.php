@@ -16,36 +16,50 @@ use App\Entity\Room;
 
 final class RoomController extends AbstractController
 {
-
-
-    #[Route('/rooms', name: 'app_room')]
-    public function index(EntityManagerInterface $em, Request $request, RoomRepository $roomRepository, BookingRepository $bookingRepository, ReviewRepository $reviewRepository): Response
+    #[Route('/rooms', name: 'app_room')] public function index(EntityManagerInterface $em, Request $request, RoomRepository $roomRepository, BookingRepository $bookingRepository, ReviewRepository $reviewRepository): Response
     {
         $page = $request->query->getInt('page', 1);
+        $maxPrice = $request->query->getInt('maxPrice', 1001);
+        $minRating = $request->query->getInt('minRating', 1);
 
         $results = $em->createQueryBuilder()
             ->select('r', 'AVG(rev.mark) as average_rating')
             ->from(Room::class, 'r')
+            ->where('r.price <= :maxPrice')
+            ->setParameter('maxPrice', $maxPrice)
+            ->having('average_rating >= :minRating OR average_rating IS NULL')
+            ->setParameter('minRating', $minRating)
             ->leftJoin('r.bookings', 'b')
             ->leftJoin('b.review', 'rev')
-            ->groupBy('r.id')
-            ->setFirstResult($page * 10 - 10)
+            ->groupBy('r.id');
+
+        $results2 = clone $results;
+        $numberOfResults = count($results2->getQuery()->getArrayResult());
+
+        $resultsWithPagination = $results
+            ->setFirstResult(10 * $page - 10)
             ->setMaxResults(10)
             ->getQuery()
             ->getArrayResult();
 
-        //array structure transformation
+        //array structure transformation 
         $roomsWithRatings = array_map(function ($item) {
             $room = $item[0];
             $room['average_rating'] = $item['average_rating'] ? number_format($item['average_rating'], 2) : 'N/A';
             return $room;
-        }, $results);
+        }, $resultsWithPagination);
 
-        return $this->render('room/index.html.twig', [
-            'controller_name' => 'RoomController',
-            'rooms' => $roomsWithRatings,
-            'page' => $page,
 
-        ]);
+        return $this->render(
+            'room/index.html.twig',
+            [
+                'controller_name' => 'RoomController',
+                'rooms' => $roomsWithRatings,
+                'page' => $page,
+                'maxPrice' => $maxPrice,
+                'minRating' => $minRating,
+                'numberOfResults' => $numberOfResults,
+            ]
+        );
     }
 }

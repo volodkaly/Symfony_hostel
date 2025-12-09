@@ -166,3 +166,7 @@ a:hover {
 .form-control {
   width: 400px;
 }
+
+.room-filters {
+  margin-bottom: 50px;
+}
