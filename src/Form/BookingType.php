@@ -24,12 +24,13 @@ class BookingType extends AbstractType
         $builder
             ->add('start_date', DateType::class, [
                 'widget' => 'single_text',
-                'attr' => [
-                    'value' => (new DateTime())->format('Y-m-d'),
-                ]
+                'html5' => true,
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('end_date', DateType::class, [
                 'widget' => 'single_text',
+                'html5' => true,
+                'attr' => ['class' => 'form-control'],
 
             ])
             ->add('room', EntityType::class, [

@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}
   New Booking
 {% endblock %}
@@ -7,42 +8,56 @@
   {% block header %}
     {{ parent() }}
   {% endblock %}
+
   <h1>Create new Booking</h1>
-  {{ 'Price per night: ' }}<span id="price">{{ price }}</span>
+
+  {{ 'Price per night: ' }}<span id="price" data-price="{{ price }}">{{ price }}</span>
   {{ 'Total price: ' }}<span id="total_price"></span>
   {{ include('booking/_form.html.twig') }}
+
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const startDateInput = document.getElementById('booking_start_date')
-      const endDateInput = document.getElementById('booking_end_date')
-      const totalPriceInput = document.getElementById('booking_total_price')
-      const totalPriceSpan = document.getElementById('total_price')
-      const pricePerNightSpan = document.getElementById('price')
+    document.addEventListener('DOMContentLoaded', () => {
+      const startInput = document.getElementById('booking_start_date') || document.getElementById('booking_startDate')
+      const endInput = document.getElementById('booking_end_date') || document.getElementById('booking_endDate')
+      const totalSpan = document.getElementById('total_price')
+      const totalInput = document.getElementById('booking_total_price')
+      const priceSpan = document.getElementById('price')
     
-      function calculatePrice() {
-        const startDateValue = startDateInput.value
-        const endDateValue = endDateInput.value
+      if (!startInput || !endInput) return
+      const getDate = (input) => {
+        const val = input.value || input.getAttribute('value')
+        if (!val) return null
+        if (val.includes('/')) {
+          const [d, m, y] = val.split('/')
+          return new Date(y, m - 1, d)
+        }
+        return new Date(val)
+      }
     
-        if (startDateValue && endDateValue) {
-          const diffMs = new Date(endDateValue) - new Date(startDateValue)
-          const diffDays = diffMs / (1000 * 60 * 60 * 24)
-          const pr = parseFloat(pricePerNightSpan.innerText)
-          if (!isNaN(pr) && diffDays > 0) {
-            const total = (pr * diffDays).toFixed(2)
-            totalPriceInput.value = total
-            totalPriceSpan.innerText = total
+      const calculate = () => {
+        const start = getDate(startInput)
+        const end = getDate(endInput)
+        const price = parseFloat(priceSpan.innerText.replace(/[^\d.,]/g, '').replace(',', '.'))
+    
+        if (start && end && !isNaN(price)) {
+          const days = Math.round((end - start) / (1000 * 60 * 60 * 24))
+    
+          if (days > 0) {
+            const total = (days * price).toFixed(2)
+            totalSpan.innerText = total
+            if (totalInput) totalInput.value = total
           } else {
-            totalPriceInput.value = ''
-            totalPriceSpan.innerText = '0'
+            totalSpan.innerText = '0.00'
           }
         }
       }
-      startDateInput.addEventListener('change', calculatePrice)
-      endDateInput.addEventListener('change', calculatePrice)
     
-      if (startDateInput.value && endDateInput.value) {
-        calculatePrice()
-      }
+      ;[startInput, endInput].forEach((el) => {
+        el.addEventListener('change', calculate)
+        el.addEventListener('input', calculate)
+      })
+    
+      calculate()
     })
   </script>
 
