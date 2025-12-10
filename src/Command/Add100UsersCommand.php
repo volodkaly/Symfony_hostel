@@ -34,10 +34,11 @@ class Add100UsersCommand extends Command
             $user = (new User())->setName($faker->name())->setEmail($faker->email())->setPassword(password_hash(1, PASSWORD_BCRYPT))->setRoles(['ROLE_USER']);
 
             $this->em->persist($user);
-            $this->em->flush();
+
 
             echo 'User added: ' . PHP_EOL . $user->getName() . PHP_EOL . 'email: ' . $user->getEmail() . PHP_EOL;
         }
+        $this->em->flush();
 
         $this->logger->info('custom log: 100 users were mocked');
         return Command::SUCCESS;

@@ -29,11 +29,12 @@ class Add10RoomsCommand extends Command
             $room = (new Room())->setName('Room' . rand(1, 100))->setCapacity(rand(1, 4))->setPrice(rand(50, 1000));
 
             $this->em->persist($room);
-            $this->em->flush();
-            $this->em->clear();
+
             echo 'Room added: ' . PHP_EOL . $room->getName() . PHP_EOL . 'price: ' . $room->getPrice() . PHP_EOL . 'capacity: ' . $room->getCapacity() . PHP_EOL;
             $this->logger->info('custom log: 10 rooms were mocked');
         }
+        $this->em->flush();
+        $this->em->clear();
         return Command::SUCCESS;
 
     }
