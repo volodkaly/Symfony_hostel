@@ -71,7 +71,7 @@ final class BookingController extends AbstractController
 
     #[IsGranted('ROLE_USER')]
     #[Route('/new', name: 'app_booking_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger, RoomRepository $roomRepository, SessionInterface $session): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger, RoomRepository $roomRepository, SessionInterface $session, BookingRepository $bookingRepository): Response
     {
         $booking = new Booking();
 
@@ -120,6 +120,22 @@ final class BookingController extends AbstractController
                     'price' => $price
                 ], new Response('', 422));
             }
+
+            if (!$bookingRepository->checkAvailability($room->getId(), $start, $end)) {
+                $this->addFlash('warning', 'The room is not available for the selected dates. Please choose different dates.');
+
+
+                return $this->render('booking/new.html.twig', [
+                    'booking' => $booking,
+                    'form' => $form,
+                    'chosen_room' => $chosen_room,
+                    'price' => $price
+                ], new Response('', 422));
+
+
+            }
+
+
 
             $entityManager->persist($booking);
             $entityManager->flush();

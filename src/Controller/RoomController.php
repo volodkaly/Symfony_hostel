@@ -37,8 +37,8 @@ final class RoomController extends AbstractController
             ->setParameter('minRating', $minRating);
 
         if ($start && $end) {
-            $start = new \DateTime($start);
-            $end = new \DateTime($end);
+            $start = new DateTime($start);
+            $end = new DateTime($end);
 
             $qb->leftJoin(
                 'r.bookings',
