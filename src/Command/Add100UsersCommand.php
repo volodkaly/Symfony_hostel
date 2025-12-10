@@ -9,6 +9,9 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Faker\Factory;
+
+
 
 #[AsCommand(
     name: 'add100Users',
@@ -19,14 +22,16 @@ class Add100UsersCommand extends Command
     public function __construct(private EntityManagerInterface $em, private LoggerInterface $logger)
     {
         parent::__construct();
+
     }
 
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $faker = Factory::create();
         for ($i = 0; $i < 100; $i++) {
 
-            $user = (new User())->setName('User' . rand(20, 100))->setEmail('user' . random_int(10000, 100000) . '@example.com')->setPassword(password_hash(1, PASSWORD_BCRYPT))->setRoles(['ROLE_USER']);
+            $user = (new User())->setName($faker->name())->setEmail($faker->email())->setPassword(password_hash(1, PASSWORD_BCRYPT))->setRoles(['ROLE_USER']);
 
             $this->em->persist($user);
             $this->em->flush();
