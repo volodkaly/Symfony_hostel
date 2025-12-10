@@ -47,9 +47,13 @@ docker-compose up --build -d
 ![alt text](image-6.png)
 ![alt text](image-7.png)
 
-### Rooms are dynamically filtered
+### Room filters
 
-![alt text](image-9.png)
+![alt text](image-11.png)
+
+### Flash messages
+
+![alt text](image-12.png)
 
 # Symfony Hostel
 
