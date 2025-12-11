@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Contact us:
+{% endblock %}
+
+{% block header %}
+  {{ parent() }}
+{% endblock %}
+
+{% block body %}
+  Contact us:
+  {{ form_start(form) }}
+
+  {{ form_widget(form) }}
+  <button class="btn">{{ button_label|default('Save') }}</button>
+  {{ form_end(form) }}
+{% endblock %}
