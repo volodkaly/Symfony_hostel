@@ -4,15 +4,17 @@
   Contact us:
 {% endblock %}
 
-{% block header %}
-  {{ parent() }}
-{% endblock %}
-
 {% block body %}
-  Contact us:
+  {% block header %}
+    {{ parent() }}
+  {% endblock %}Contact us:
   {{ form_start(form) }}
-
-  {{ form_widget(form) }}
-  <button class="btn">{{ button_label|default('Save') }}</button>
+  {{ form_row(form.content, { label: false }) }}
+  {{ form_widget(form, { class: 'contact-input' }) }}
+  <button class="btn btn-success">{{ button_label|default('Save') }}</button>
   {{ form_end(form) }}
+  <br />
+  Phone:
+  <br />
+  <a href="tel:12345789">12345789</a>
 {% endblock %}
